@@ -1,0 +1,137 @@
+/* The printed cover and the open reading pages share the site's paper and ink. */
+.guide {
+  color: #182643;
+  margin-block: clamp(22px, 3.8vw, 50px) 38px;
+  overflow-wrap: anywhere;
+}
+.guide :is(h1, h2, h3, p, ol, ul, dl, dd) { margin: 0; }
+.guide :is(h1, h2, h3) { color: inherit; }
+.guide :is(h2, h3) { line-height: 1.3; }
+.guide :is(p, dd) { line-height: 1.75; }
+.guide a:focus-visible {
+  outline: 3px solid #df583b;
+  outline-offset: 4px;
+}
+.manual-cover {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(220px, .78fr);
+  gap: clamp(24px, 5vw, 70px);
+  align-items: center;
+  padding: clamp(26px, 4.3vw, 60px);
+  background: #182643;
+  color: #faf7ef;
+  border-left: 9px solid #df583b;
+}
+.cover-title { position: relative; padding-top: 19px; }
+.cover-title::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  border-top: 4px solid #ef8465;
+}
+.cover-title h1 {
+  font: 850 clamp(2.45rem, 5.35vw, 5rem)/1.12 "Microsoft YaHei", "PingFang SC", sans-serif;
+  letter-spacing: -.045em;
+}
+.cover-title p { max-width: 29em; margin-top: 21px; color: #ecebe7; }
+.guide-index {
+  background: #faf7ef;
+  color: #182643;
+  padding: 18px 22px 15px;
+  box-shadow: 5px 5px 0 #df583b;
+}
+.guide-index h2 { font-size: 1.08rem; }
+.guide-index ul { list-style: none; padding: 0; margin-top: 8px; }
+.guide-index li { border-top: 1px solid #d4d1c7; }
+.guide-index a {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding-block: 5px;
+  color: #283652;
+  font-size: .9rem;
+  text-decoration: none;
+}
+.guide-index a:hover { text-decoration: underline; }
+.guide-index a span { color: #9c371f; }
+.manual-section {
+  display: grid;
+  grid-template-columns: minmax(170px, .72fr) minmax(0, 2fr);
+  gap: clamp(20px, 4vw, 50px);
+  padding: clamp(27px, 3.3vw, 46px) 0;
+  border-bottom: 1px solid #c8c4b9;
+}
+.manual-section > h2 {
+  font-size: clamp(1.5rem, 2.4vw, 2.15rem);
+  letter-spacing: -.045em;
+  scroll-margin-top: 22px;
+}
+.section-body { min-width: 0; }
+.section-body h3, .modes dt { font-weight: 750; font-size: 1rem; }
+.launch-steps {
+  display: grid;
+  list-style: none;
+  padding: 0;
+  counter-reset: start-step;
+  gap: 15px;
+}
+.launch-steps li {
+  position: relative;
+  counter-increment: start-step;
+  padding-left: 40px;
+}
+.launch-steps li::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  content: counter(start-step);
+  width: 26px;
+  height: 26px;
+  text-align: center;
+  line-height: 26px;
+  border: 1px solid #454f91;
+  border-radius: 50%;
+  color: #454f91;
+  font: 700 14px/26px Georgia, serif;
+}
+.launch-steps p { margin-top: 3px; }
+.section-body code {
+  padding: 1px 4px;
+  color: #3c447d;
+  background: #ece9e2;
+  font-family: Consolas, monospace;
+  font-size: .94em;
+}
+.section-body .manual-note {
+  margin-top: 18px;
+  border-left: 3px solid #df583b;
+  padding: 8px 14px;
+  background-color: #f1eade;
+  font-size: .92rem;
+}
+.modes, .game-entries { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.section-body .modes { margin-top: 15px; }
+.modes > div, .game-entries article { border-top: 2px solid #454f91; padding-top: 10px; }
+.modes dd, .game-entries p { margin-top: 5px; }
+.guide-return, .credits a {
+  color: #39427e;
+  font-weight: 650;
+  text-underline-offset: .2em;
+}
+.guide-return { display: inline-block; margin-top: 16px; }
+.credits .section-body p + p { margin-top: 9px; }
+@media (max-width: 700px) {
+  .manual-cover, .manual-section { grid-template-columns: minmax(0, 1fr); }
+  .manual-cover { gap: 20px; }
+  .manual-section { gap: 15px; }
+  .guide-index { padding: 14px 16px; }
+  .guide-index ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
+}
+@media (max-width: 440px) {
+  .manual-cover { padding: 20px 17px 23px; border-left-width: 6px; }
+  .cover-title p { margin-top: 12px; }
+  .guide-index ul, .modes, .game-entries { grid-template-columns: minmax(0, 1fr); }
+  .guide-index a { padding-block: 6px; }
+}

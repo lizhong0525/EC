@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小溟使用手册 · 小溟的房间</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="guide.css">
+</head>
+<body>
+  <header class="mast">
+    <div class="wrap mast-inner">
+      <a class="brand" href="index.html"><img src="assets/portrait.png" alt=""><span>小溟的房间</span></a>
+      <nav aria-label="主导航"><a href="index.html">首页</a><a href="about.html" aria-current="page">使用指南</a></nav>
+    </div>
+  </header>
+  <main class="guide wrap">
+    <div class="manual-cover">
+      <div class="cover-title">
+        <h1>小溟使用手册</h1>
+        <p>从 Windows 启动网站，和小溟聊两句，或到游戏间找个对手。这本手册可以离线翻阅。</p>
+      </div>
+      <nav class="guide-index" aria-label="手册目录">
+        <h2>手册目录</h2>
+        <ul>
+          <li><a href="#start">启动与连接<span aria-hidden="true">↓</span></a></li>
+          <li><a href="#chat">与小溟聊天<span aria-hidden="true">↓</span></a></li>
+          <li><a href="#games">两款游戏的玩法<span aria-hidden="true">↓</span></a></li>
+          <li><a href="#credits">角色与素材<span aria-hidden="true">↓</span></a></li>
+        </ul>
+      </nav>
+    </div>
+    <section class="manual-section" aria-labelledby="start">
+      <h2 id="start">启动与连接</h2>
+      <div class="section-body">
+        <ol class="launch-steps">
+          <li><h3>解压完整网站</h3><p>准备装有 Python 3.10 或更高版本的 Windows 电脑。解压课程包，打开含有 <code>server.py</code> 的网站目录。</p></li>
+          <li><h3>打开启动程序</h3><p>双击 <strong>启动小溟.cmd</strong>，保留打开的命令窗口。浏览器会自动打开网站；也可以把窗口里的本机网址复制到地址栏。</p></li>
+          <li><h3>选择运行方式</h3><p>选「本地规则」可直接聊天或试玩。要使用 DeepSeek，在首页填写自己的 API 密钥，勾选联网授权，再保存设置。</p></li>
+        </ol>
+        <p class="manual-note">关闭命令窗口即可停止服务。在同一目录重新启动，可以继续此前保存的对话和棋局。</p>
+      </div>
+    </section>
+    <section class="manual-section" aria-labelledby="chat">
+      <h2 id="chat">与小溟聊天</h2>
+      <div class="section-body">
+        <p>在完整网站点「开始对话」，选择运行方式，在「写给小溟」里输入想说的话。比如，告诉它你为哪场活动紧张，或者最近完成了哪件开心的小事。</p>
+        <dl class="modes">
+          <div><dt>本地规则</dt><dd>按问候、心情和游戏等话题给出预设回应。断开外部网络也能使用。</dd></div>
+          <div><dt>DeepSeek 联网</dt><dd>模型结合最近几轮对话回答。等待结束后可以接着聊，遇到请求失败可在原消息上点「重试发送」。</dd></div>
+        </dl>
+        <a class="guide-return" href="index.html#chat-guide">回到首页的聊天指南入口 <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+    <section class="manual-section" aria-labelledby="games">
+      <h2 id="games">两款游戏的玩法</h2>
+      <div class="section-body">
+        <div class="game-entries">
+          <article><h3>国际象棋</h3><p>从「游戏间」进入棋桌，选执白先行或执黑应战。轮到你时，先选己方棋子，再点有标记的目标格。棋谱会记录双方走法。</p><p>将军且对手无法解围时获胜。独立的「一步将死」练习也可以离线打开。</p></article>
+          <article><h3>谁是卧底</h3><p>四人各获一个秘密词，其中三人同词、一人异词。轮流描述，避开词语本身。读完公开线索、讨论后，投给你怀疑的玩家。</p><p>平票时进入辩护与复投。找出卧底则平民获胜；只剩两人时，卧底获胜。</p></article>
+        </div>
+        <a class="guide-return" href="index.html#games-guide">回到首页的游戏指南入口 <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+    <section class="manual-section credits" aria-labelledby="credits">
+      <h2 id="credits">角色与素材</h2>
+      <div class="section-body">
+        <p>角色溟月由上善无形创作，动画由 dsh-pet 社区整理。小溟的头像截自原项目收录的待机动画。游戏人物头像与对话、游戏设计沿用 EcoCompanion，本课程作业供个人非商业展示。</p>
+        <p><a href="assets/ATTRIBUTION.md">本地素材说明</a> · <a href="https://github.com/PC2005-cloud/dsh-pet">动画工程来源（联网）</a></p>
+      </div>
+    </section>
+  </main>
+  <footer class="foot wrap"><span>小溟的房间 · EcoCompanion</span><a href="index.html">返回首页</a></footer>
+</body>
+</html>

@@ -1,0 +1,72 @@
+{
+  "version": "guideline-reference-v1.0.0",
+  "sources": [
+    {
+      "source_id": "who-mhgap-third-edition",
+      "publisher": "World Health Organization",
+      "title": "Mental Health Gap Action Programme (mhGAP) guideline for mental, neurological and substance use disorders",
+      "edition": "Third edition, 20 November 2023; publication landing page only",
+      "url": "https://www.who.int/publications/i/item/9789240084278",
+      "jurisdiction": "International guidance, not local law",
+      "population_scope": "Non-specialist health workers; low- and middle-income settings",
+      "limitations": "Landing page provides provenance only. Do not attribute the older evidence-centre recommendation below to a newly verified 2023 recommendation."
+    },
+    {
+      "source_id": "who-self-harm-assessment-evidence-centre",
+      "publisher": "World Health Organization",
+      "title": "Assessment for self harm/suicide in persons with priority mental, neurological and substance use disorders",
+      "edition": "WHO evidence-centre web recommendation; retrieval snapshot, not a verified replacement for the 2023 full guideline",
+      "url": "https://www.who.int/teams/mental-health-and-substance-use/treatment-care/mental-health-gap-action-programme/evidence-centre/self-harm-and-suicide/assessment-for-self-harm-suicide-in-persons-with-priority-mental-neurological-and-substance-use-disorders",
+      "jurisdiction": "International non-specialized health setting guidance",
+      "population_scope": "Specified clinical conditions, diagnosed children, or relevant acute emotional distress; not all adolescents",
+      "limitations": "The page states strong recommendation / low-quality evidence. Clinical-provider guidance is not validation of an autonomous AI or a universal escalation rule."
+    },
+    {
+      "source_id": "nice-ng225",
+      "publisher": "National Institute for Health and Care Excellence",
+      "title": "Self-harm: assessment, management and preventing recurrence",
+      "edition": "NG225, 7 September 2022; recommendation page snapshot required",
+      "url": "https://www.nice.org.uk/guidance/ng225/chapter/Recommendations",
+      "jurisdiction": "United Kingdom health and social care",
+      "population_scope": "People who have self-harmed; age-specific recommendations require checking",
+      "limitations": "Do not generalize this self-harm guideline to all distress. Retrieval may return HTTP 403; unavailable text cannot support active mappings."
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "WHO-ASK-SELF-HARM-PARTIAL-V1",
+      "source_id": "who-self-harm-assessment-evidence-centre",
+      "locator": "Recommendation(s), assessment question recommendation",
+      "source_anchor": "about thoughts or plans of self-harm in the last month",
+      "paraphrase": "For the specified health-care assessment context, ask about recent self-harm thoughts/plans and prior acts. The project proposes only a partial safety-inquiry constraint, not a risk diagnosis or treatment instruction.",
+      "conditions": [
+        "visible_age_over_10",
+        "visible_acute_distress_associated_with_interpersonal_conflict_loss_or_severe_life_event",
+        "current_visible_information_does_not_already_resolve_the_safety_inquiry"
+      ],
+      "exclusions": [
+        "applicability_requires_inventing_a_diagnosis_or_hidden_fact",
+        "reported_material_is_only_hypothetical_or_solely_about_another_person"
+      ],
+      "conclusion": {
+        "direct_safety_check_required": true
+      },
+      "transfer_limitations": "This is a developer-proposed adaptation from clinical-provider guidance to a synthetic AI action vocabulary. Source/scope project review and separate per-node curator review are mandatory; the adapted timing and semantics are not themselves WHO-endorsed."
+    },
+    {
+      "rule_id": "NICE-NO-RISK-SCALE-DISPOSITION-V1",
+      "source_id": "nice-ng225",
+      "locator": "Section 1.6, Risk assessment tools and scales; exact text pending successful snapshot",
+      "source_anchor": "Do not use risk assessment tools and scales",
+      "paraphrase": "Candidate research boundary: do not treat a numerical score or a global risk class as a stand-alone disposition rule. This entry has no case-level action labels.",
+      "conditions": [
+        "self_harm_guideline_scope_applies"
+      ],
+      "exclusions": [
+        "outside_self_harm_assessment_scope"
+      ],
+      "conclusion": {},
+      "transfer_limitations": "Documentation boundary only, not a case-label generator. Unavailable source text blocks approval; even after verification its empty conclusion supplies no scored fields."
+    }
+  ]
+}

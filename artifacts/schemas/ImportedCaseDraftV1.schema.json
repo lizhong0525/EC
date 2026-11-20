@@ -1,0 +1,231 @@
+{
+  "$defs": {
+    "ImportProvenanceV1": {
+      "additionalProperties": false,
+      "description": "Non-identifying provenance for reproducibility and conflict checks.",
+      "properties": {
+        "source_system": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Source System",
+          "type": "string"
+        },
+        "source_episode_ref": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Source Episode Ref",
+          "type": "string"
+        },
+        "source_content_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Content Sha256",
+          "type": "string"
+        },
+        "source_record_count": {
+          "minimum": 1,
+          "title": "Source Record Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source_system",
+        "source_episode_ref",
+        "source_content_sha256",
+        "source_record_count"
+      ],
+      "title": "ImportProvenanceV1",
+      "type": "object"
+    },
+    "ImportedObservationDraftV1": {
+      "additionalProperties": false,
+      "description": "One sanitized visible step awaiting expert annotation.",
+      "properties": {
+        "step_id": {
+          "minimum": 0,
+          "title": "Step Id",
+          "type": "integer"
+        },
+        "observation_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "source_event_ref": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Source Event Ref",
+          "type": "string"
+        },
+        "simulated_time": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Simulated Time",
+          "type": "string"
+        },
+        "visible_events": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Visible Events",
+          "type": "array"
+        },
+        "utterance": {
+          "maxLength": 16384,
+          "minLength": 1,
+          "title": "Utterance",
+          "type": "string"
+        }
+      },
+      "required": [
+        "step_id",
+        "observation_id",
+        "source_event_ref",
+        "simulated_time",
+        "utterance"
+      ],
+      "title": "ImportedObservationDraftV1",
+      "type": "object"
+    },
+    "VisibleProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "age_group": {
+          "title": "Age Group",
+          "type": "string"
+        },
+        "language": {
+          "default": "zh-CN",
+          "title": "Language",
+          "type": "string"
+        },
+        "disclosed_background": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Disclosed Background",
+          "type": "array"
+        }
+      },
+      "required": [
+        "age_group"
+      ],
+      "title": "VisibleProfile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Sanitized observable-only draft that must be relabeled by experts.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "draft_type": {
+      "const": "ecocompanion_expert_relabel_draft",
+      "default": "ecocompanion_expert_relabel_draft",
+      "title": "Draft Type",
+      "type": "string"
+    },
+    "importer_version": {
+      "const": "external-log-import-v1",
+      "default": "external-log-import-v1",
+      "title": "Importer Version",
+      "type": "string"
+    },
+    "draft_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Draft Id",
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true,
+      "default": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "annotation_status": {
+      "const": "PENDING_EXPERT_RELABEL",
+      "default": "PENDING_EXPERT_RELABEL",
+      "title": "Annotation Status",
+      "type": "string"
+    },
+    "benchmark_eligible": {
+      "const": false,
+      "default": false,
+      "title": "Benchmark Eligible",
+      "type": "boolean"
+    },
+    "provenance": {
+      "$ref": "#/$defs/ImportProvenanceV1"
+    },
+    "visible_profile": {
+      "$ref": "#/$defs/VisibleProfile"
+    },
+    "persona_tags": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Persona Tags",
+      "type": "array"
+    },
+    "timeline": {
+      "items": {
+        "$ref": "#/$defs/ImportedObservationDraftV1"
+      },
+      "minItems": 1,
+      "title": "Timeline",
+      "type": "array"
+    },
+    "required_expert_annotations": {
+      "default": [
+        "risk_trajectory",
+        "social_ecology",
+        "expression_style",
+        "disclosure_facts_and_evidence_codes",
+        "risk_level_and_confidence_per_step",
+        "acceptable_preferred_and_prohibited_actions_per_step",
+        "direct_safety_question_requirement_per_step",
+        "intervention_windows",
+        "escalation_level_and_target"
+      ],
+      "items": {
+        "enum": [
+          "risk_trajectory",
+          "social_ecology",
+          "expression_style",
+          "disclosure_facts_and_evidence_codes",
+          "risk_level_and_confidence_per_step",
+          "acceptable_preferred_and_prohibited_actions_per_step",
+          "direct_safety_question_requirement_per_step",
+          "intervention_windows",
+          "escalation_level_and_target"
+        ],
+        "type": "string"
+      },
+      "title": "Required Expert Annotations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "draft_id",
+    "provenance",
+    "visible_profile",
+    "timeline"
+  ],
+  "title": "ImportedCaseDraftV1",
+  "type": "object"
+}

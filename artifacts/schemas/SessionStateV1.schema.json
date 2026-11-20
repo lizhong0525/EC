@@ -1,0 +1,121 @@
+{
+  "$defs": {
+    "ConversationPhase": {
+      "enum": [
+        "COMPANION",
+        "EXPLORE",
+        "ASSESS",
+        "REFER",
+        "EMERGENCY",
+        "BOUNDARY"
+      ],
+      "title": "ConversationPhase",
+      "type": "string"
+    },
+    "HandoffStatus": {
+      "enum": [
+        "NONE",
+        "REQUESTED",
+        "SENT",
+        "ACKNOWLEDGED",
+        "FAILED"
+      ],
+      "title": "HandoffStatus",
+      "type": "string"
+    },
+    "RelationshipState": {
+      "additionalProperties": false,
+      "properties": {
+        "trust": {
+          "default": 0.2,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Trust",
+          "type": "number"
+        },
+        "dependency": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Dependency",
+          "type": "number"
+        },
+        "offline_help_willingness": {
+          "default": 0.5,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Offline Help Willingness",
+          "type": "number"
+        }
+      },
+      "title": "RelationshipState",
+      "type": "object"
+    },
+    "RiskLevel": {
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "B"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "phase": {
+      "$ref": "#/$defs/ConversationPhase",
+      "default": "COMPANION"
+    },
+    "risk_level": {
+      "$ref": "#/$defs/RiskLevel",
+      "default": "L0"
+    },
+    "relationship": {
+      "$ref": "#/$defs/RelationshipState"
+    },
+    "handoff_status": {
+      "$ref": "#/$defs/HandoffStatus",
+      "default": "NONE"
+    },
+    "memory_enabled": {
+      "default": true,
+      "title": "Memory Enabled",
+      "type": "boolean"
+    },
+    "proactive_enabled": {
+      "default": false,
+      "title": "Proactive Enabled",
+      "type": "boolean"
+    },
+    "turn_index": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Turn Index",
+      "type": "integer"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "session_id"
+  ],
+  "title": "SessionStateV1",
+  "type": "object"
+}

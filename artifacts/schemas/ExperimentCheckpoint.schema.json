@@ -1,0 +1,60 @@
+{
+  "$defs": {
+    "ExperimentStatus": {
+      "enum": [
+        "in_progress",
+        "complete"
+      ],
+      "title": "ExperimentStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Atomically replaced progress index derived from append-only results.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_fingerprint": {
+      "title": "Run Fingerprint",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ExperimentStatus"
+    },
+    "completed_unit_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Completed Unit Ids",
+      "type": "array"
+    },
+    "completed_count": {
+      "minimum": 0,
+      "title": "Completed Count",
+      "type": "integer"
+    },
+    "planned_count": {
+      "exclusiveMinimum": 0,
+      "title": "Planned Count",
+      "type": "integer"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_fingerprint",
+    "status",
+    "completed_unit_ids",
+    "completed_count",
+    "planned_count"
+  ],
+  "title": "ExperimentCheckpoint",
+  "type": "object"
+}

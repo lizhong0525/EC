@@ -1,0 +1,739 @@
+{
+  "$defs": {
+    "Action": {
+      "enum": [
+        "SUPPORTIVE_LISTENING",
+        "CLARIFY_SYMPTOMS",
+        "DIRECT_SAFETY_CHECK",
+        "LOW_RISK_COPING",
+        "TRUSTED_ADULT_BRIDGE",
+        "SCHOOL_SUPPORT",
+        "PROFESSIONAL_ASSESSMENT",
+        "URGENT_ESCALATION",
+        "BOUNDARY_CLARIFICATION",
+        "PRIVACY_CLARIFICATION"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "ActorRole": {
+      "enum": [
+        "USER",
+        "COMPANION",
+        "STUDENT_SIMULATOR",
+        "SYSTEM"
+      ],
+      "title": "ActorRole",
+      "type": "string"
+    },
+    "AgentDecisionV1": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "assessment": {
+          "$ref": "#/$defs/RiskEstimate"
+        },
+        "uncertainty": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Uncertainty",
+          "type": "number"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "decision": {
+          "$ref": "#/$defs/DecisionPlan"
+        },
+        "response": {
+          "$ref": "#/$defs/ResponsePayload"
+        },
+        "reason_codes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "assessment",
+        "uncertainty",
+        "decision",
+        "response"
+      ],
+      "title": "AgentDecisionV1",
+      "type": "object"
+    },
+    "ConversationMessage": {
+      "additionalProperties": false,
+      "properties": {
+        "message_id": {
+          "title": "Message Id",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/ActorRole"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "simulated_time": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Simulated Time"
+        }
+      },
+      "required": [
+        "message_id",
+        "role",
+        "content"
+      ],
+      "title": "ConversationMessage",
+      "type": "object"
+    },
+    "CurrentObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "channel": {
+          "const": "text",
+          "default": "text",
+          "title": "Channel",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "observable_features": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Observable Features",
+          "type": "object"
+        }
+      },
+      "required": [
+        "observation_id",
+        "message"
+      ],
+      "title": "CurrentObservation",
+      "type": "object"
+    },
+    "DecisionPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "primary_action": {
+          "$ref": "#/$defs/Action"
+        },
+        "secondary_actions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Secondary Actions",
+          "type": "array"
+        },
+        "escalation_level": {
+          "$ref": "#/$defs/RiskLevel"
+        },
+        "escalation_target": {
+          "$ref": "#/$defs/EscalationTarget",
+          "default": "NONE"
+        },
+        "follow_up_required": {
+          "default": false,
+          "title": "Follow Up Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "primary_action",
+        "escalation_level"
+      ],
+      "title": "DecisionPlan",
+      "type": "object"
+    },
+    "EscalationTarget": {
+      "enum": [
+        "NONE",
+        "TRUSTED_ADULT",
+        "SCHOOL_SUPPORT",
+        "PROFESSIONAL",
+        "EMERGENCY_HUMAN"
+      ],
+      "title": "EscalationTarget",
+      "type": "string"
+    },
+    "EvidenceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "evidence_code": {
+          "title": "Evidence Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "observation_id",
+        "evidence_code"
+      ],
+      "title": "EvidenceRef",
+      "type": "object"
+    },
+    "ObservationV1": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "benchmark_version": {
+          "default": "ecotriage-v1",
+          "title": "Benchmark Version",
+          "type": "string"
+        },
+        "track": {
+          "$ref": "#/$defs/Track"
+        },
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "step_id": {
+          "minimum": 0,
+          "title": "Step Id",
+          "type": "integer"
+        },
+        "simulated_time": {
+          "title": "Simulated Time",
+          "type": "string"
+        },
+        "visible_profile": {
+          "$ref": "#/$defs/VisibleProfile"
+        },
+        "current_observation": {
+          "$ref": "#/$defs/CurrentObservation"
+        },
+        "visible_context": {
+          "$ref": "#/$defs/VisibleContext"
+        },
+        "allowed_primary_actions": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Allowed Primary Actions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "track",
+        "episode_id",
+        "step_id",
+        "simulated_time",
+        "visible_profile",
+        "current_observation",
+        "allowed_primary_actions"
+      ],
+      "title": "ObservationV1",
+      "type": "object"
+    },
+    "ResponsePayload": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "question": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Question"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "ResponsePayload",
+      "type": "object"
+    },
+    "RiskEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "depression_worsening": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Depression Worsening",
+          "type": "number"
+        },
+        "immediate_safety_risk": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Immediate Safety Risk",
+          "type": "number"
+        },
+        "dependency_risk": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Dependency Risk",
+          "type": "number"
+        }
+      },
+      "required": [
+        "depression_worsening",
+        "immediate_safety_risk",
+        "dependency_risk"
+      ],
+      "title": "RiskEstimate",
+      "type": "object"
+    },
+    "RiskLevel": {
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "B"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    },
+    "StudentTurnV1": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "step_id": {
+          "minimum": 0,
+          "title": "Step Id",
+          "type": "integer"
+        },
+        "disclosed_fact_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Disclosed Fact Ids",
+          "type": "array"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "renderer_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renderer Model"
+        }
+      },
+      "required": [
+        "episode_id",
+        "step_id",
+        "disclosed_fact_ids",
+        "text"
+      ],
+      "title": "StudentTurnV1",
+      "type": "object"
+    },
+    "Track": {
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ],
+      "title": "Track",
+      "type": "string"
+    },
+    "TrackBEpisodeSpecRecord": {
+      "additionalProperties": false,
+      "description": "Frozen Track B episode selection embedded in a run manifest.",
+      "properties": {
+        "episode_id": {
+          "minLength": 1,
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "case_id": {
+          "minLength": 1,
+          "title": "Case Id",
+          "type": "string"
+        },
+        "seed": {
+          "title": "Seed",
+          "type": "integer"
+        },
+        "surface_index": {
+          "minimum": 0,
+          "title": "Surface Index",
+          "type": "integer"
+        },
+        "turn_limit": {
+          "minimum": 1,
+          "title": "Turn Limit",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "episode_id",
+        "case_id",
+        "seed",
+        "surface_index",
+        "turn_limit"
+      ],
+      "title": "TrackBEpisodeSpecRecord",
+      "type": "object"
+    },
+    "TrackBMetricRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "critical_evidence_recall": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Critical Evidence Recall",
+          "type": "number"
+        },
+        "question_efficiency": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Question Efficiency",
+          "type": "number"
+        },
+        "disclosure_interruption_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Disclosure Interruption Rate",
+          "type": "number"
+        },
+        "critical_fact_count": {
+          "minimum": 0,
+          "title": "Critical Fact Count",
+          "type": "integer"
+        },
+        "acquired_critical_fact_count": {
+          "minimum": 0,
+          "title": "Acquired Critical Fact Count",
+          "type": "integer"
+        },
+        "evidence_question_count": {
+          "minimum": 0,
+          "title": "Evidence Question Count",
+          "type": "integer"
+        },
+        "productive_question_count": {
+          "minimum": 0,
+          "title": "Productive Question Count",
+          "type": "integer"
+        },
+        "disclosure_opportunity_count": {
+          "minimum": 0,
+          "title": "Disclosure Opportunity Count",
+          "type": "integer"
+        },
+        "disclosure_interruption_count": {
+          "minimum": 0,
+          "title": "Disclosure Interruption Count",
+          "type": "integer"
+        },
+        "renderer_fallback_count": {
+          "minimum": 0,
+          "title": "Renderer Fallback Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "critical_evidence_recall",
+        "question_efficiency",
+        "disclosure_interruption_rate",
+        "critical_fact_count",
+        "acquired_critical_fact_count",
+        "evidence_question_count",
+        "productive_question_count",
+        "disclosure_opportunity_count",
+        "disclosure_interruption_count",
+        "renderer_fallback_count"
+      ],
+      "title": "TrackBMetricRecord",
+      "type": "object"
+    },
+    "TrackBTurnRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "turn_index": {
+          "minimum": 0,
+          "title": "Turn Index",
+          "type": "integer"
+        },
+        "observation": {
+          "$ref": "#/$defs/ObservationV1"
+        },
+        "decision": {
+          "$ref": "#/$defs/AgentDecisionV1"
+        },
+        "student_turn": {
+          "$ref": "#/$defs/StudentTurnV1"
+        },
+        "offered_fact_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Offered Fact Ids",
+          "type": "array"
+        },
+        "newly_disclosed_fact_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Newly Disclosed Fact Ids",
+          "type": "array"
+        },
+        "renderer_name": {
+          "minLength": 1,
+          "title": "Renderer Name",
+          "type": "string"
+        },
+        "renderer_fallback_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renderer Fallback Reason"
+        },
+        "had_disclosure_opportunity": {
+          "title": "Had Disclosure Opportunity",
+          "type": "boolean"
+        },
+        "disclosure_interrupted": {
+          "title": "Disclosure Interrupted",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "turn_index",
+        "observation",
+        "decision",
+        "student_turn",
+        "offered_fact_ids",
+        "newly_disclosed_fact_ids",
+        "renderer_name",
+        "had_disclosure_opportunity",
+        "disclosure_interrupted"
+      ],
+      "title": "TrackBTurnRecord",
+      "type": "object"
+    },
+    "VisibleContext": {
+      "additionalProperties": false,
+      "properties": {
+        "recent_events": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Recent Events",
+          "type": "array"
+        },
+        "relationship_cues": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Relationship Cues",
+          "type": "array"
+        },
+        "conversation_history": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ConversationMessage"
+          },
+          "title": "Conversation History",
+          "type": "array"
+        },
+        "memory_budget_tokens": {
+          "default": 4096,
+          "minimum": 0,
+          "title": "Memory Budget Tokens",
+          "type": "integer"
+        }
+      },
+      "title": "VisibleContext",
+      "type": "object"
+    },
+    "VisibleProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "age_group": {
+          "title": "Age Group",
+          "type": "string"
+        },
+        "language": {
+          "default": "zh-CN",
+          "title": "Language",
+          "type": "string"
+        },
+        "disclosed_background": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Disclosed Background",
+          "type": "array"
+        }
+      },
+      "required": [
+        "age_group"
+      ],
+      "title": "VisibleProfile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One complete policy-by-episode Track B evaluation unit.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "track": {
+      "const": "B",
+      "default": "B",
+      "title": "Track",
+      "type": "string"
+    },
+    "unit_id": {
+      "minLength": 1,
+      "title": "Unit Id",
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "title": "Run Id",
+      "type": "string"
+    },
+    "run_fingerprint": {
+      "title": "Run Fingerprint",
+      "type": "string"
+    },
+    "case_id": {
+      "minLength": 1,
+      "title": "Case Id",
+      "type": "string"
+    },
+    "policy_name": {
+      "minLength": 1,
+      "title": "Policy Name",
+      "type": "string"
+    },
+    "spec": {
+      "$ref": "#/$defs/TrackBEpisodeSpecRecord"
+    },
+    "renderer_name": {
+      "minLength": 1,
+      "title": "Renderer Name",
+      "type": "string"
+    },
+    "replay_digest": {
+      "title": "Replay Digest",
+      "type": "string"
+    },
+    "metrics": {
+      "$ref": "#/$defs/TrackBMetricRecord"
+    },
+    "turns": {
+      "items": {
+        "$ref": "#/$defs/TrackBTurnRecord"
+      },
+      "title": "Turns",
+      "type": "array"
+    }
+  },
+  "required": [
+    "unit_id",
+    "run_id",
+    "run_fingerprint",
+    "case_id",
+    "policy_name",
+    "spec",
+    "renderer_name",
+    "replay_digest",
+    "metrics",
+    "turns"
+  ],
+  "title": "TrackBExperimentResult",
+  "type": "object"
+}

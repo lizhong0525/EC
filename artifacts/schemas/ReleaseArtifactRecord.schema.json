@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "description": "Status of one optional or required release component.",
+  "properties": {
+    "name": {
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "included",
+        "placeholder",
+        "withheld",
+        "not_provided",
+        "omitted"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "paths": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Paths",
+      "type": "array"
+    },
+    "note": {
+      "minLength": 1,
+      "title": "Note",
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "status",
+    "note"
+  ],
+  "title": "ReleaseArtifactRecord",
+  "type": "object"
+}

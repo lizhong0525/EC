@@ -1,0 +1,19 @@
+{
+  "counts": {
+    "train": 83,
+    "validation": 17,
+    "test": 0
+  },
+  "sources": {
+    "psydial-d4-acl2025": 39,
+    "eco-synthetic-v3-boundary": 32,
+    "eco-synthetic-v1": 29
+  },
+  "labels": {
+    "none": 78,
+    "current": 12,
+    "uncertain": 10
+  },
+  "review": "Engineering annotation, not clinical or double expert review",
+  "frozen_test_read": false
+}

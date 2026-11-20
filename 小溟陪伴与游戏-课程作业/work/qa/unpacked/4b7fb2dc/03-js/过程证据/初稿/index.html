@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>一步将死 · 小溟棋局练习</title>
+  <link rel="stylesheet" href="practice.css">
+  <script src="position.js" defer></script>
+  <script src="practice.js" defer></script>
+</head>
+<body>
+  <header><div class="wrap header-content"><span class="brand"><span class="brand-icon" aria-hidden="true">♞</span>小溟游戏间</span><span>国际象棋练习</span></div></header>
+  <main class="wrap">
+    <div class="heading"><h1>一步将死</h1><p>白方走。用王和后配合，在一步之内将死黑王。</p></div>
+    <div class="layout">
+      <section class="board-card" aria-label="棋盘区域">
+        <div class="player"><span class="stone black-stone"></span>黑方<span class="side-caption">对手</span></div>
+        <div id="board" role="group" aria-label="棋盘，白方在下。方向键移动，回车或空格选择。"></div>
+        <div class="player"><span class="stone white-stone"></span>白方<span class="side-caption">你的位置</span></div>
+      </section>
+      <aside class="panel">
+        <div class="panel-section"><h2>局面分析</h2><p id="turn">白方走棋</p><p id="feedback" role="status">选择一个白子，查看它可以到达的格子。</p></div>
+        <div class="panel-section"><h2>棋谱</h2><p id="notation">尚未落子</p></div>
+        <button type="button" id="reset">重新开始</button>
+        <details><summary>操作与提示</summary><p>点击棋子，再点带圆点的目标格。使用键盘时，按 Tab 进入棋盘、方向键移动、回车或空格选择。</p><p>黑王位于 a8，白后位于 c7，白王位于 c6。试着让王保护后，同时封住 a7 和 b8。</p></details>
+      </aside>
+    </div>
+    <noscript><p>请启用 JavaScript 以操作棋盘。</p></noscript>
+  </main>
+</body>
+</html>

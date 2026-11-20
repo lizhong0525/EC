@@ -1,0 +1,20 @@
+{
+  "qq": {
+    "enabled": false,
+    "app_id": "",
+    "client_secret": "",
+    "intents": 33554432
+  },
+  "personal_wechat": {
+    "enabled": false,
+    "bridge_token": "",
+    "account_wxid": "",
+    "allowed_chats": [],
+    "allow_groups": false,
+    "test_account_confirmed": false
+  },
+  "callback_host": "127.0.0.1",
+  "callback_port": 8765,
+  "per_user_per_minute": 6,
+  "max_inflight": 8
+}

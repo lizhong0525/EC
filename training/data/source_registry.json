@@ -1,0 +1,15 @@
+{
+  "schema": "ecocompanion-training-source-registry-v1",
+  "sources": [
+    {
+      "source_id": "eco-synthetic-v1",
+      "name": "EcoCompanion authored synthetic boundary examples",
+      "origin": "Project-authored, no real conversations or patient data",
+      "license": "Project source handoff terms",
+      "license_url": "../../docs/QWEN_FINETUNING.md",
+      "training_allowed": true,
+      "reviewed_at": "2026-10-27",
+      "limitation": "Small engineering fixture, not clinical validation or evidence of population performance."
+    }
+  ]
+}

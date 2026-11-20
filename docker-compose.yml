@@ -1,0 +1,81 @@
+name: ecocompanion
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    image: ecocompanion-backend:local
+    init: true
+    restart: unless-stopped
+    user: "${ECO_DOCKER_UID:-1000}:${ECO_DOCKER_GID:-1000}"
+    read_only: true
+    environment:
+      LITELLM_BASE_URL: "${LITELLM_BASE_URL:-https://litellm.dex-gem.ai/v1}"
+      # Null values are inherited from the Compose process when present and
+      # otherwise omitted, so optional settings do not become misleading "".
+      LITELLM_API_KEY:
+      ECO_DATABASE_URL: "sqlite+aiosqlite:////app/artifacts/ecocompanion.db"
+      ECO_ARTIFACTS_DIR: "/app/artifacts"
+      ECO_DEFAULT_MODEL:
+      ECO_DEMO_FALLBACK_MODEL:
+      ECO_API_BUDGET_CNY: "${ECO_API_BUDGET_CNY:-5000}"
+      ECO_MODEL_INPUT_PRICE_CNY_PER_MILLION:
+      ECO_MODEL_OUTPUT_PRICE_CNY_PER_MILLION:
+      ECO_MODEL_PRICING_VERSION:
+      ECO_RESEARCH_MODE: "${ECO_RESEARCH_MODE:-true}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /app/artifacts
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    ports:
+      - "127.0.0.1:${ECO_BACKEND_PORT:-8000}:8000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          urllib.request.urlopen("http://127.0.0.1:8000/healthz", timeout=2).read()
+      interval: 10s
+      timeout: 3s
+      start_period: 20s
+      retries: 6
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+    image: ecocompanion-web:local
+    init: true
+    restart: unless-stopped
+    read_only: true
+    depends_on:
+      backend:
+        condition: service_healthy
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    ports:
+      - "127.0.0.1:${ECO_WEB_PORT:-4173}:8080"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - --quiet
+        - --output-document=-
+        - http://127.0.0.1:8080/healthz
+      interval: 10s
+      timeout: 3s
+      start_period: 10s
+      retries: 6

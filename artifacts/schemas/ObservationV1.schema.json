@@ -1,0 +1,244 @@
+{
+  "$defs": {
+    "Action": {
+      "enum": [
+        "SUPPORTIVE_LISTENING",
+        "CLARIFY_SYMPTOMS",
+        "DIRECT_SAFETY_CHECK",
+        "LOW_RISK_COPING",
+        "TRUSTED_ADULT_BRIDGE",
+        "SCHOOL_SUPPORT",
+        "PROFESSIONAL_ASSESSMENT",
+        "URGENT_ESCALATION",
+        "BOUNDARY_CLARIFICATION",
+        "PRIVACY_CLARIFICATION"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "ActorRole": {
+      "enum": [
+        "USER",
+        "COMPANION",
+        "STUDENT_SIMULATOR",
+        "SYSTEM"
+      ],
+      "title": "ActorRole",
+      "type": "string"
+    },
+    "ConversationMessage": {
+      "additionalProperties": false,
+      "properties": {
+        "message_id": {
+          "title": "Message Id",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/ActorRole"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "simulated_time": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Simulated Time"
+        }
+      },
+      "required": [
+        "message_id",
+        "role",
+        "content"
+      ],
+      "title": "ConversationMessage",
+      "type": "object"
+    },
+    "CurrentObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "channel": {
+          "const": "text",
+          "default": "text",
+          "title": "Channel",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "observable_features": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Observable Features",
+          "type": "object"
+        }
+      },
+      "required": [
+        "observation_id",
+        "message"
+      ],
+      "title": "CurrentObservation",
+      "type": "object"
+    },
+    "Track": {
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ],
+      "title": "Track",
+      "type": "string"
+    },
+    "VisibleContext": {
+      "additionalProperties": false,
+      "properties": {
+        "recent_events": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Recent Events",
+          "type": "array"
+        },
+        "relationship_cues": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Relationship Cues",
+          "type": "array"
+        },
+        "conversation_history": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ConversationMessage"
+          },
+          "title": "Conversation History",
+          "type": "array"
+        },
+        "memory_budget_tokens": {
+          "default": 4096,
+          "minimum": 0,
+          "title": "Memory Budget Tokens",
+          "type": "integer"
+        }
+      },
+      "title": "VisibleContext",
+      "type": "object"
+    },
+    "VisibleProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "age_group": {
+          "title": "Age Group",
+          "type": "string"
+        },
+        "language": {
+          "default": "zh-CN",
+          "title": "Language",
+          "type": "string"
+        },
+        "disclosed_background": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Disclosed Background",
+          "type": "array"
+        }
+      },
+      "required": [
+        "age_group"
+      ],
+      "title": "VisibleProfile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "benchmark_version": {
+      "default": "ecotriage-v1",
+      "title": "Benchmark Version",
+      "type": "string"
+    },
+    "track": {
+      "$ref": "#/$defs/Track"
+    },
+    "episode_id": {
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "step_id": {
+      "minimum": 0,
+      "title": "Step Id",
+      "type": "integer"
+    },
+    "simulated_time": {
+      "title": "Simulated Time",
+      "type": "string"
+    },
+    "visible_profile": {
+      "$ref": "#/$defs/VisibleProfile"
+    },
+    "current_observation": {
+      "$ref": "#/$defs/CurrentObservation"
+    },
+    "visible_context": {
+      "$ref": "#/$defs/VisibleContext"
+    },
+    "allowed_primary_actions": {
+      "items": {
+        "$ref": "#/$defs/Action"
+      },
+      "title": "Allowed Primary Actions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "track",
+    "episode_id",
+    "step_id",
+    "simulated_time",
+    "visible_profile",
+    "current_observation",
+    "allowed_primary_actions"
+  ],
+  "title": "ObservationV1",
+  "type": "object"
+}

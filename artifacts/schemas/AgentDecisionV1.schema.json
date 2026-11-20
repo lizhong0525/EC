@@ -1,0 +1,201 @@
+{
+  "$defs": {
+    "Action": {
+      "enum": [
+        "SUPPORTIVE_LISTENING",
+        "CLARIFY_SYMPTOMS",
+        "DIRECT_SAFETY_CHECK",
+        "LOW_RISK_COPING",
+        "TRUSTED_ADULT_BRIDGE",
+        "SCHOOL_SUPPORT",
+        "PROFESSIONAL_ASSESSMENT",
+        "URGENT_ESCALATION",
+        "BOUNDARY_CLARIFICATION",
+        "PRIVACY_CLARIFICATION"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "DecisionPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "primary_action": {
+          "$ref": "#/$defs/Action"
+        },
+        "secondary_actions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Secondary Actions",
+          "type": "array"
+        },
+        "escalation_level": {
+          "$ref": "#/$defs/RiskLevel"
+        },
+        "escalation_target": {
+          "$ref": "#/$defs/EscalationTarget",
+          "default": "NONE"
+        },
+        "follow_up_required": {
+          "default": false,
+          "title": "Follow Up Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "primary_action",
+        "escalation_level"
+      ],
+      "title": "DecisionPlan",
+      "type": "object"
+    },
+    "EscalationTarget": {
+      "enum": [
+        "NONE",
+        "TRUSTED_ADULT",
+        "SCHOOL_SUPPORT",
+        "PROFESSIONAL",
+        "EMERGENCY_HUMAN"
+      ],
+      "title": "EscalationTarget",
+      "type": "string"
+    },
+    "EvidenceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "evidence_code": {
+          "title": "Evidence Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "observation_id",
+        "evidence_code"
+      ],
+      "title": "EvidenceRef",
+      "type": "object"
+    },
+    "ResponsePayload": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "question": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Question"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "ResponsePayload",
+      "type": "object"
+    },
+    "RiskEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "depression_worsening": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Depression Worsening",
+          "type": "number"
+        },
+        "immediate_safety_risk": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Immediate Safety Risk",
+          "type": "number"
+        },
+        "dependency_risk": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Dependency Risk",
+          "type": "number"
+        }
+      },
+      "required": [
+        "depression_worsening",
+        "immediate_safety_risk",
+        "dependency_risk"
+      ],
+      "title": "RiskEstimate",
+      "type": "object"
+    },
+    "RiskLevel": {
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "B"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "assessment": {
+      "$ref": "#/$defs/RiskEstimate"
+    },
+    "uncertainty": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Uncertainty",
+      "type": "number"
+    },
+    "evidence": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EvidenceRef"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "decision": {
+      "$ref": "#/$defs/DecisionPlan"
+    },
+    "response": {
+      "$ref": "#/$defs/ResponsePayload"
+    },
+    "reason_codes": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Reason Codes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "assessment",
+    "uncertainty",
+    "decision",
+    "response"
+  ],
+  "title": "AgentDecisionV1",
+  "type": "object"
+}

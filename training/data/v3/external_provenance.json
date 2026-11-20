@@ -1,0 +1,205 @@
+{
+  "dataset": "qiuhuachuan/PsyDial-D4",
+  "revision": "0ceef5ac19fb8174baa6be31ce1b2637711cb4c2",
+  "sha256": "29bfa723645f3c7213d00e34042c164545b27629487253fa6ebec97c7f3638b9",
+  "license": "Apache-2.0",
+  "citation": "Qiu and Lan, PsyDial, ACL 2025, pp. 21624-21655",
+  "review": "Individual seeker-turn text review; no clinical annotations",
+  "rows": [
+    {
+      "example_id": "psydial-0000-005",
+      "dialogue_id": 0,
+      "turn_id": 5
+    },
+    {
+      "example_id": "psydial-0002-023",
+      "dialogue_id": 2,
+      "turn_id": 23
+    },
+    {
+      "example_id": "psydial-0003-049",
+      "dialogue_id": 3,
+      "turn_id": 49
+    },
+    {
+      "example_id": "psydial-0005-009",
+      "dialogue_id": 5,
+      "turn_id": 9
+    },
+    {
+      "example_id": "psydial-0007-005",
+      "dialogue_id": 7,
+      "turn_id": 5
+    },
+    {
+      "example_id": "psydial-0010-011",
+      "dialogue_id": 10,
+      "turn_id": 11
+    },
+    {
+      "example_id": "psydial-0013-005",
+      "dialogue_id": 13,
+      "turn_id": 5
+    },
+    {
+      "example_id": "psydial-0017-005",
+      "dialogue_id": 17,
+      "turn_id": 5
+    },
+    {
+      "example_id": "psydial-0019-017",
+      "dialogue_id": 19,
+      "turn_id": 17
+    },
+    {
+      "example_id": "psydial-0023-007",
+      "dialogue_id": 23,
+      "turn_id": 7
+    },
+    {
+      "example_id": "psydial-0026-007",
+      "dialogue_id": 26,
+      "turn_id": 7
+    },
+    {
+      "example_id": "psydial-0031-007",
+      "dialogue_id": 31,
+      "turn_id": 7
+    },
+    {
+      "example_id": "psydial-0034-005",
+      "dialogue_id": 34,
+      "turn_id": 5
+    },
+    {
+      "example_id": "psydial-0001-007",
+      "dialogue_id": 1,
+      "turn_id": 7
+    },
+    {
+      "example_id": "psydial-0021-007",
+      "dialogue_id": 21,
+      "turn_id": 7
+    },
+    {
+      "example_id": "psydial-0022-053",
+      "dialogue_id": 22,
+      "turn_id": 53
+    },
+    {
+      "example_id": "psydial-0024-003",
+      "dialogue_id": 24,
+      "turn_id": 3
+    },
+    {
+      "example_id": "psydial-0027-039",
+      "dialogue_id": 27,
+      "turn_id": 39
+    },
+    {
+      "example_id": "psydial-0035-069",
+      "dialogue_id": 35,
+      "turn_id": 69
+    },
+    {
+      "example_id": "psydial-0036-031",
+      "dialogue_id": 36,
+      "turn_id": 31
+    },
+    {
+      "example_id": "psydial-0039-027",
+      "dialogue_id": 39,
+      "turn_id": 27
+    },
+    {
+      "example_id": "psydial-0040-001",
+      "dialogue_id": 40,
+      "turn_id": 1
+    },
+    {
+      "example_id": "psydial-0043-041",
+      "dialogue_id": 43,
+      "turn_id": 41
+    },
+    {
+      "example_id": "psydial-0045-005",
+      "dialogue_id": 45,
+      "turn_id": 5
+    },
+    {
+      "example_id": "psydial-0051-011",
+      "dialogue_id": 51,
+      "turn_id": 11
+    },
+    {
+      "example_id": "psydial-0052-007",
+      "dialogue_id": 52,
+      "turn_id": 7
+    },
+    {
+      "example_id": "psydial-0055-009",
+      "dialogue_id": 55,
+      "turn_id": 9
+    },
+    {
+      "example_id": "psydial-0062-013",
+      "dialogue_id": 62,
+      "turn_id": 13
+    },
+    {
+      "example_id": "psydial-0063-021",
+      "dialogue_id": 63,
+      "turn_id": 21
+    },
+    {
+      "example_id": "psydial-0069-017",
+      "dialogue_id": 69,
+      "turn_id": 17
+    },
+    {
+      "example_id": "psydial-0081-005",
+      "dialogue_id": 81,
+      "turn_id": 5
+    },
+    {
+      "example_id": "psydial-0087-021",
+      "dialogue_id": 87,
+      "turn_id": 21
+    },
+    {
+      "example_id": "psydial-0099-113",
+      "dialogue_id": 99,
+      "turn_id": 113
+    },
+    {
+      "example_id": "psydial-0106-031",
+      "dialogue_id": 106,
+      "turn_id": 31
+    },
+    {
+      "example_id": "psydial-0118-011",
+      "dialogue_id": 118,
+      "turn_id": 11
+    },
+    {
+      "example_id": "psydial-0141-009",
+      "dialogue_id": 141,
+      "turn_id": 9
+    },
+    {
+      "example_id": "psydial-0162-003",
+      "dialogue_id": 162,
+      "turn_id": 3
+    },
+    {
+      "example_id": "psydial-0173-043",
+      "dialogue_id": 173,
+      "turn_id": 43
+    },
+    {
+      "example_id": "psydial-0188-005",
+      "dialogue_id": 188,
+      "turn_id": 5
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "$defs": {
+    "RelationshipViolation": {
+      "enum": [
+        "EXCLUSIVITY",
+        "POSSESSIVENESS",
+        "GUILT_INDUCTION",
+        "IDENTITY_DECEPTION",
+        "DISCOURAGE_OFFLINE_HELP",
+        "FALSE_CONFIDENTIALITY",
+        "UNSAFE_GUARDIAN_ASSUMPTION",
+        "PROACTIVE_PERSISTENCE",
+        "MEMORY_INSTRUCTION_ACCEPTED",
+        "MISSING_REQUIRED_RESPONSE"
+      ],
+      "title": "RelationshipViolation",
+      "type": "string"
+    },
+    "TrackCConfiguration": {
+      "description": "The four text configurations in the V1 factorial matrix.",
+      "enum": [
+        "PLAIN_ASSISTANT",
+        "LONG_TERM_MEMORY",
+        "MEMORY_PROACTIVE",
+        "MEMORY_PROACTIVE_ECO_SAFE"
+      ],
+      "title": "TrackCConfiguration",
+      "type": "string"
+    },
+    "TrackCEpisodeSpecRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "episode_id": {
+          "minLength": 1,
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "scenario_id": {
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "configuration": {
+          "$ref": "#/$defs/TrackCConfiguration"
+        },
+        "seed": {
+          "title": "Seed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "episode_id",
+        "scenario_id",
+        "configuration",
+        "seed"
+      ],
+      "title": "TrackCEpisodeSpecRecord",
+      "type": "object"
+    },
+    "TrackCMetricRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "total_agent_messages": {
+          "minimum": 0,
+          "title": "Total Agent Messages",
+          "type": "integer"
+        },
+        "violating_turn_count": {
+          "minimum": 0,
+          "title": "Violating Turn Count",
+          "type": "integer"
+        },
+        "total_violations": {
+          "minimum": 0,
+          "title": "Total Violations",
+          "type": "integer"
+        },
+        "violation_turn_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Violation Turn Rate",
+          "type": "number"
+        },
+        "violation_counts": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Violation Counts",
+          "type": "object"
+        }
+      },
+      "required": [
+        "total_agent_messages",
+        "violating_turn_count",
+        "total_violations",
+        "violation_turn_rate",
+        "violation_counts"
+      ],
+      "title": "TrackCMetricRecord",
+      "type": "object"
+    },
+    "TrackCTurnRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "turn_index": {
+          "minimum": 0,
+          "title": "Turn Index",
+          "type": "integer"
+        },
+        "event_code": {
+          "minLength": 1,
+          "title": "Event Code",
+          "type": "string"
+        },
+        "user_text": {
+          "minLength": 1,
+          "title": "User Text",
+          "type": "string"
+        },
+        "response_text": {
+          "title": "Response Text",
+          "type": "string"
+        },
+        "violations": {
+          "items": {
+            "$ref": "#/$defs/RelationshipViolation"
+          },
+          "title": "Violations",
+          "type": "array"
+        },
+        "consecutive_nonresponses": {
+          "minimum": 0,
+          "title": "Consecutive Nonresponses",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "turn_index",
+        "event_code",
+        "user_text",
+        "response_text",
+        "violations",
+        "consecutive_nonresponses"
+      ],
+      "title": "TrackCTurnRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One complete scenario/configuration/seed Track C evaluation unit.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "track": {
+      "const": "C",
+      "default": "C",
+      "title": "Track",
+      "type": "string"
+    },
+    "unit_id": {
+      "minLength": 1,
+      "title": "Unit Id",
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "title": "Run Id",
+      "type": "string"
+    },
+    "run_fingerprint": {
+      "title": "Run Fingerprint",
+      "type": "string"
+    },
+    "responder_name": {
+      "minLength": 1,
+      "title": "Responder Name",
+      "type": "string"
+    },
+    "spec": {
+      "$ref": "#/$defs/TrackCEpisodeSpecRecord"
+    },
+    "replay_digest": {
+      "title": "Replay Digest",
+      "type": "string"
+    },
+    "metrics": {
+      "$ref": "#/$defs/TrackCMetricRecord"
+    },
+    "turns": {
+      "items": {
+        "$ref": "#/$defs/TrackCTurnRecord"
+      },
+      "title": "Turns",
+      "type": "array"
+    }
+  },
+  "required": [
+    "unit_id",
+    "run_id",
+    "run_fingerprint",
+    "responder_name",
+    "spec",
+    "replay_digest",
+    "metrics",
+    "turns"
+  ],
+  "title": "TrackCExperimentResult",
+  "type": "object"
+}

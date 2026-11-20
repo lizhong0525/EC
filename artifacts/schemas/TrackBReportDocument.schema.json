@@ -1,0 +1,763 @@
+{
+  "$defs": {
+    "Action": {
+      "enum": [
+        "SUPPORTIVE_LISTENING",
+        "CLARIFY_SYMPTOMS",
+        "DIRECT_SAFETY_CHECK",
+        "LOW_RISK_COPING",
+        "TRUSTED_ADULT_BRIDGE",
+        "SCHOOL_SUPPORT",
+        "PROFESSIONAL_ASSESSMENT",
+        "URGENT_ESCALATION",
+        "BOUNDARY_CLARIFICATION",
+        "PRIVACY_CLARIFICATION"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "FailureCaseRecord": {
+      "additionalProperties": false,
+      "description": "Ranked, auditable failure extracted from an immutable result unit.",
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "failure_id": {
+          "minLength": 1,
+          "title": "Failure Id",
+          "type": "string"
+        },
+        "rank": {
+          "exclusiveMinimum": 0,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "track": {
+          "$ref": "#/$defs/Track"
+        },
+        "severity_score": {
+          "exclusiveMinimum": 0.0,
+          "title": "Severity Score",
+          "type": "number"
+        },
+        "system_name": {
+          "minLength": 1,
+          "title": "System Name",
+          "type": "string"
+        },
+        "unit_id": {
+          "minLength": 1,
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "case_or_scenario_id": {
+          "minLength": 1,
+          "title": "Case Or Scenario Id",
+          "type": "string"
+        },
+        "pair_key": {
+          "minLength": 1,
+          "title": "Pair Key",
+          "type": "string"
+        },
+        "step_or_turn_index": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step Or Turn Index"
+        },
+        "surface_index": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surface Index"
+        },
+        "repeat_index": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repeat Index"
+        },
+        "seed": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Seed"
+        },
+        "issue_codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Issue Codes",
+          "type": "array"
+        },
+        "message_excerpt": {
+          "title": "Message Excerpt",
+          "type": "string"
+        },
+        "response_excerpt": {
+          "title": "Response Excerpt",
+          "type": "string"
+        },
+        "reference_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference Value"
+        },
+        "predicted_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Value"
+        },
+        "selected_action": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Action"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "violation_codes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Violation Codes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "failure_id",
+        "rank",
+        "track",
+        "severity_score",
+        "system_name",
+        "unit_id",
+        "case_or_scenario_id",
+        "pair_key",
+        "issue_codes",
+        "message_excerpt",
+        "response_excerpt"
+      ],
+      "title": "FailureCaseRecord",
+      "type": "object"
+    },
+    "MetricEstimateRecord": {
+      "additionalProperties": false,
+      "description": "Point estimate and canonical-cluster percentile confidence interval.",
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "estimate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Estimate"
+        },
+        "ci_lower": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ci Lower"
+        },
+        "ci_upper": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ci Upper"
+        },
+        "confidence_level": {
+          "exclusiveMaximum": 1.0,
+          "exclusiveMinimum": 0.0,
+          "title": "Confidence Level",
+          "type": "number"
+        },
+        "cluster_count": {
+          "exclusiveMinimum": 0,
+          "title": "Cluster Count",
+          "type": "integer"
+        },
+        "bootstrap_resamples": {
+          "exclusiveMinimum": 0,
+          "title": "Bootstrap Resamples",
+          "type": "integer"
+        },
+        "valid_bootstrap_resamples": {
+          "minimum": 0,
+          "title": "Valid Bootstrap Resamples",
+          "type": "integer"
+        },
+        "bootstrap_seed": {
+          "title": "Bootstrap Seed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "estimate",
+        "ci_lower",
+        "ci_upper",
+        "confidence_level",
+        "cluster_count",
+        "bootstrap_resamples",
+        "valid_bootstrap_resamples",
+        "bootstrap_seed"
+      ],
+      "title": "MetricEstimateRecord",
+      "type": "object"
+    },
+    "PairedComparisonRecord": {
+      "additionalProperties": false,
+      "description": "Versioned paired result; every difference is ``left - right``.",
+      "properties": {
+        "schema_version": {
+          "const": "1.1",
+          "default": "1.1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "metric_name": {
+          "minLength": 1,
+          "title": "Metric Name",
+          "type": "string"
+        },
+        "left_name": {
+          "minLength": 1,
+          "title": "Left Name",
+          "type": "string"
+        },
+        "right_name": {
+          "minLength": 1,
+          "title": "Right Name",
+          "type": "string"
+        },
+        "pair_unit": {
+          "minLength": 1,
+          "title": "Pair Unit",
+          "type": "string"
+        },
+        "higher_is_better": {
+          "title": "Higher Is Better",
+          "type": "boolean"
+        },
+        "matched_pair_count": {
+          "exclusiveMinimum": 0,
+          "title": "Matched Pair Count",
+          "type": "integer"
+        },
+        "cluster_count": {
+          "exclusiveMinimum": 0,
+          "title": "Cluster Count",
+          "type": "integer"
+        },
+        "pair_count": {
+          "exclusiveMinimum": 0,
+          "title": "Pair Count",
+          "type": "integer"
+        },
+        "effective_pair_count": {
+          "minimum": 0,
+          "title": "Effective Pair Count",
+          "type": "integer"
+        },
+        "mean_difference": {
+          "title": "Mean Difference",
+          "type": "number"
+        },
+        "median_difference": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Median Difference"
+        },
+        "ci_lower": {
+          "title": "Ci Lower",
+          "type": "number"
+        },
+        "ci_upper": {
+          "title": "Ci Upper",
+          "type": "number"
+        },
+        "cohen_dz": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cohen Dz"
+        },
+        "raw_p_value": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Raw P Value",
+          "type": "number"
+        },
+        "holm_adjusted_p_value": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Holm Adjusted P Value",
+          "type": "number"
+        },
+        "p_value": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "P Value",
+          "type": "number"
+        },
+        "comparison_family": {
+          "minLength": 1,
+          "title": "Comparison Family",
+          "type": "string"
+        },
+        "primary_endpoint": {
+          "default": false,
+          "title": "Primary Endpoint",
+          "type": "boolean"
+        },
+        "left_only_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Left Only Count",
+          "type": "integer"
+        },
+        "right_only_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Right Only Count",
+          "type": "integer"
+        },
+        "complete_pairing": {
+          "default": true,
+          "title": "Complete Pairing",
+          "type": "boolean"
+        },
+        "test_method": {
+          "enum": [
+            "all_ties",
+            "exact_sign_flip",
+            "monte_carlo_sign_flip"
+          ],
+          "title": "Test Method",
+          "type": "string"
+        },
+        "win_count": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Win Count"
+        },
+        "tie_count": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tie Count"
+        },
+        "loss_count": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Loss Count"
+        },
+        "bootstrap_resamples": {
+          "exclusiveMinimum": 0,
+          "title": "Bootstrap Resamples",
+          "type": "integer"
+        },
+        "permutation_resamples": {
+          "exclusiveMinimum": 0,
+          "title": "Permutation Resamples",
+          "type": "integer"
+        },
+        "random_seed": {
+          "title": "Random Seed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "metric_name",
+        "left_name",
+        "right_name",
+        "pair_unit",
+        "higher_is_better",
+        "matched_pair_count",
+        "cluster_count",
+        "pair_count",
+        "effective_pair_count",
+        "mean_difference",
+        "median_difference",
+        "ci_lower",
+        "ci_upper",
+        "cohen_dz",
+        "raw_p_value",
+        "holm_adjusted_p_value",
+        "p_value",
+        "comparison_family",
+        "test_method",
+        "bootstrap_resamples",
+        "permutation_resamples",
+        "random_seed"
+      ],
+      "title": "PairedComparisonRecord",
+      "type": "object"
+    },
+    "StatisticalProtocolRecord": {
+      "additionalProperties": false,
+      "description": "Frozen statistical protocol embedded in every paper-facing report.",
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "confidence_level": {
+          "default": 0.95,
+          "exclusiveMaximum": 1.0,
+          "exclusiveMinimum": 0.0,
+          "title": "Confidence Level",
+          "type": "number"
+        },
+        "bootstrap_resamples": {
+          "default": 2000,
+          "exclusiveMinimum": 0,
+          "title": "Bootstrap Resamples",
+          "type": "integer"
+        },
+        "permutation_resamples": {
+          "default": 10000,
+          "exclusiveMinimum": 0,
+          "title": "Permutation Resamples",
+          "type": "integer"
+        },
+        "random_seed": {
+          "default": 20260904,
+          "title": "Random Seed",
+          "type": "integer"
+        },
+        "cluster_unit": {
+          "minLength": 1,
+          "title": "Cluster Unit",
+          "type": "string"
+        },
+        "repeated_measure_handling": {
+          "minLength": 1,
+          "title": "Repeated Measure Handling",
+          "type": "string"
+        },
+        "paired_unit": {
+          "minLength": 1,
+          "title": "Paired Unit",
+          "type": "string"
+        },
+        "paired_test": {
+          "const": "two-sided exact-or-monte-carlo sign-flip",
+          "default": "two-sided exact-or-monte-carlo sign-flip",
+          "title": "Paired Test",
+          "type": "string"
+        },
+        "effect_size": {
+          "const": "paired Cohen dz",
+          "default": "paired Cohen dz",
+          "title": "Effect Size",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cluster_unit",
+        "repeated_measure_handling",
+        "paired_unit"
+      ],
+      "title": "StatisticalProtocolRecord",
+      "type": "object"
+    },
+    "Track": {
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ],
+      "title": "Track",
+      "type": "string"
+    },
+    "TrackBReportRow": {
+      "additionalProperties": false,
+      "properties": {
+        "policy_name": {
+          "title": "Policy Name",
+          "type": "string"
+        },
+        "episode_count": {
+          "exclusiveMinimum": 0,
+          "title": "Episode Count",
+          "type": "integer"
+        },
+        "case_count": {
+          "exclusiveMinimum": 0,
+          "title": "Case Count",
+          "type": "integer"
+        },
+        "seed_count": {
+          "exclusiveMinimum": 0,
+          "title": "Seed Count",
+          "type": "integer"
+        },
+        "mean_turn_count": {
+          "exclusiveMinimum": 0.0,
+          "title": "Mean Turn Count",
+          "type": "number"
+        },
+        "critical_evidence_recall": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Critical Evidence Recall",
+          "type": "number"
+        },
+        "question_efficiency": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Question Efficiency",
+          "type": "number"
+        },
+        "disclosure_interruption_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Disclosure Interruption Rate",
+          "type": "number"
+        },
+        "renderer_fallback_turn_rate": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Renderer Fallback Turn Rate",
+          "type": "number"
+        },
+        "metric_estimates": {
+          "additionalProperties": {
+            "$ref": "#/$defs/MetricEstimateRecord"
+          },
+          "title": "Metric Estimates",
+          "type": "object"
+        }
+      },
+      "required": [
+        "policy_name",
+        "episode_count",
+        "case_count",
+        "seed_count",
+        "mean_turn_count",
+        "critical_evidence_recall",
+        "question_efficiency",
+        "disclosure_interruption_rate",
+        "renderer_fallback_turn_rate",
+        "metric_estimates"
+      ],
+      "title": "TrackBReportRow",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "track": {
+      "const": "B",
+      "default": "B",
+      "title": "Track",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "run_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Run Id"
+    },
+    "run_fingerprint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Run Fingerprint"
+    },
+    "result_path": {
+      "title": "Result Path",
+      "type": "string"
+    },
+    "completed_unit_count": {
+      "minimum": 0,
+      "title": "Completed Unit Count",
+      "type": "integer"
+    },
+    "planned_unit_count": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Planned Unit Count"
+    },
+    "complete": {
+      "title": "Complete",
+      "type": "boolean"
+    },
+    "statistical_protocol": {
+      "$ref": "#/$defs/StatisticalProtocolRecord"
+    },
+    "rows": {
+      "items": {
+        "$ref": "#/$defs/TrackBReportRow"
+      },
+      "title": "Rows",
+      "type": "array"
+    },
+    "paired_comparisons": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/PairedComparisonRecord"
+      },
+      "title": "Paired Comparisons",
+      "type": "array"
+    },
+    "failure_case_limit": {
+      "default": 30,
+      "minimum": 0,
+      "title": "Failure Case Limit",
+      "type": "integer"
+    },
+    "failure_cases": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/FailureCaseRecord"
+      },
+      "title": "Failure Cases",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "run_fingerprint",
+    "result_path",
+    "completed_unit_count",
+    "complete",
+    "statistical_protocol",
+    "rows"
+  ],
+  "title": "TrackBReportDocument",
+  "type": "object"
+}

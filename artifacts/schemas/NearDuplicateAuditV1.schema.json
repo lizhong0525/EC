@@ -1,0 +1,171 @@
+{
+  "$defs": {
+    "CrossSplitSimilarityV1": {
+      "additionalProperties": false,
+      "properties": {
+        "left_split": {
+          "$ref": "#/$defs/DatasetSplit"
+        },
+        "right_split": {
+          "$ref": "#/$defs/DatasetSplit"
+        },
+        "kind": {
+          "enum": [
+            "utterance",
+            "event"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "compared_pair_count": {
+          "minimum": 0,
+          "title": "Compared Pair Count",
+          "type": "integer"
+        },
+        "maximum_jaccard": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Maximum Jaccard",
+          "type": "number"
+        },
+        "pairs_at_or_above_threshold": {
+          "minimum": 0,
+          "title": "Pairs At Or Above Threshold",
+          "type": "integer"
+        },
+        "worst_left": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TextReferenceV1"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "worst_right": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TextReferenceV1"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "left_split",
+        "right_split",
+        "kind",
+        "compared_pair_count",
+        "maximum_jaccard",
+        "pairs_at_or_above_threshold"
+      ],
+      "title": "CrossSplitSimilarityV1",
+      "type": "object"
+    },
+    "DatasetSplit": {
+      "enum": [
+        "train",
+        "dev",
+        "public_test",
+        "hidden_test"
+      ],
+      "title": "DatasetSplit",
+      "type": "string"
+    },
+    "TextReferenceV1": {
+      "additionalProperties": false,
+      "properties": {
+        "split": {
+          "$ref": "#/$defs/DatasetSplit"
+        },
+        "kind": {
+          "enum": [
+            "utterance",
+            "event"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "observation_id": {
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "surface_index": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surface Index"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "split",
+        "kind",
+        "case_id",
+        "observation_id",
+        "text"
+      ],
+      "title": "TextReferenceV1",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "ngram_size": {
+      "minimum": 1,
+      "title": "Ngram Size",
+      "type": "integer"
+    },
+    "threshold": {
+      "exclusiveMinimum": 0.0,
+      "maximum": 1.0,
+      "title": "Threshold",
+      "type": "number"
+    },
+    "comparisons": {
+      "items": {
+        "$ref": "#/$defs/CrossSplitSimilarityV1"
+      },
+      "title": "Comparisons",
+      "type": "array"
+    },
+    "passed": {
+      "title": "Passed",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "ngram_size",
+    "threshold",
+    "comparisons",
+    "passed"
+  ],
+  "title": "NearDuplicateAuditV1",
+  "type": "object"
+}

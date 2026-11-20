@@ -1,0 +1,223 @@
+{
+  "$defs": {
+    "ReleaseArtifactRecord": {
+      "additionalProperties": false,
+      "description": "Status of one optional or required release component.",
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "included",
+            "placeholder",
+            "withheld",
+            "not_provided",
+            "omitted"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "paths": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Paths",
+          "type": "array"
+        },
+        "note": {
+          "minLength": 1,
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "status",
+        "note"
+      ],
+      "title": "ReleaseArtifactRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "release_name": {
+      "minLength": 1,
+      "title": "Release Name",
+      "type": "string"
+    },
+    "benchmark_version": {
+      "minLength": 1,
+      "title": "Benchmark Version",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "dataset_seed": {
+      "title": "Dataset Seed",
+      "type": "integer"
+    },
+    "dataset_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Dataset Digest",
+      "type": "string"
+    },
+    "status": {
+      "const": "research-preview",
+      "default": "research-preview",
+      "title": "Status",
+      "type": "string"
+    },
+    "expert_annotation_status": {
+      "const": "pending",
+      "default": "pending",
+      "title": "Expert Annotation Status",
+      "type": "string"
+    },
+    "split_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Split Counts",
+      "type": "object"
+    },
+    "published_case_labels": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Published Case Labels",
+      "type": "array"
+    },
+    "published_input_splits": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Published Input Splits",
+      "type": "array"
+    },
+    "withheld_splits": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Withheld Splits",
+      "type": "array"
+    },
+    "file_sha256": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "File Sha256",
+      "type": "object"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "source_revision": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Revision"
+    },
+    "code_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Code Version"
+    },
+    "dependency_lock_files": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Dependency Lock Files",
+      "type": "array"
+    },
+    "artifact_inventory": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ReleaseArtifactRecord"
+      },
+      "title": "Artifact Inventory",
+      "type": "array"
+    },
+    "model_snapshot_status": {
+      "default": "not_provided",
+      "enum": [
+        "included",
+        "placeholder",
+        "not_provided"
+      ],
+      "title": "Model Snapshot Status",
+      "type": "string"
+    },
+    "run_artifact_status": {
+      "default": "not_provided",
+      "enum": [
+        "included",
+        "not_provided"
+      ],
+      "title": "Run Artifact Status",
+      "type": "string"
+    },
+    "license_status": {
+      "default": "not_declared",
+      "enum": [
+        "declared",
+        "not_declared"
+      ],
+      "title": "License Status",
+      "type": "string"
+    },
+    "reproducibility_notes": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Reproducibility Notes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "release_name",
+    "benchmark_version",
+    "dataset_seed",
+    "dataset_digest",
+    "split_counts",
+    "published_case_labels",
+    "published_input_splits",
+    "withheld_splits",
+    "file_sha256",
+    "limitations"
+  ],
+  "title": "ReleaseManifest",
+  "type": "object"
+}

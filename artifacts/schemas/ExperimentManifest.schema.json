@@ -1,0 +1,303 @@
+{
+  "$defs": {
+    "DatasetSplit": {
+      "enum": [
+        "train",
+        "dev",
+        "public_test",
+        "hidden_test"
+      ],
+      "title": "DatasetSplit",
+      "type": "string"
+    },
+    "PolicyFamily": {
+      "enum": [
+        "diagnostic_baseline",
+        "llm_baseline",
+        "rule_agent",
+        "eco_safe",
+        "eco_safe_ablation"
+      ],
+      "title": "PolicyFamily",
+      "type": "string"
+    },
+    "PolicyRuntimeRecord": {
+      "additionalProperties": false,
+      "description": "Secret-free policy implementation and model provenance.",
+      "properties": {
+        "policy_name": {
+          "minLength": 1,
+          "title": "Policy Name",
+          "type": "string"
+        },
+        "family": {
+          "$ref": "#/$defs/PolicyFamily"
+        },
+        "implementation_version": {
+          "minLength": 1,
+          "title": "Implementation Version",
+          "type": "string"
+        },
+        "prompt_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prompt Version"
+        },
+        "provider_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Name"
+        },
+        "model_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Id"
+        },
+        "model_snapshot_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Snapshot Digest"
+        },
+        "pricing_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pricing Version"
+        },
+        "input_price_cny_per_million": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Price Cny Per Million"
+        },
+        "output_price_cny_per_million": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Price Cny Per Million"
+        },
+        "api_budget_cny": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 5000.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Api Budget Cny"
+        },
+        "enabled_features": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Enabled Features",
+          "type": "array"
+        },
+        "ablated_component": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ablated Component"
+        }
+      },
+      "required": [
+        "policy_name",
+        "family",
+        "implementation_version"
+      ],
+      "title": "PolicyRuntimeRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Write-once description of one offline Track A run.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "title": "Run Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "benchmark_version": {
+      "title": "Benchmark Version",
+      "type": "string"
+    },
+    "track": {
+      "const": "A",
+      "default": "A",
+      "title": "Track",
+      "type": "string"
+    },
+    "dataset_seed": {
+      "title": "Dataset Seed",
+      "type": "integer"
+    },
+    "dataset_path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Dataset Path"
+    },
+    "dataset_digest": {
+      "title": "Dataset Digest",
+      "type": "string"
+    },
+    "split": {
+      "$ref": "#/$defs/DatasetSplit"
+    },
+    "policy_names": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Policy Names",
+      "type": "array"
+    },
+    "policy_runtimes": {
+      "items": {
+        "$ref": "#/$defs/PolicyRuntimeRecord"
+      },
+      "title": "Policy Runtimes",
+      "type": "array"
+    },
+    "surface_indices": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Surface Indices",
+      "type": "array"
+    },
+    "repeats": {
+      "exclusiveMinimum": 0,
+      "title": "Repeats",
+      "type": "integer"
+    },
+    "risk_threshold": {
+      "exclusiveMaximum": 1.0,
+      "exclusiveMinimum": 0.0,
+      "title": "Risk Threshold",
+      "type": "number"
+    },
+    "selected_case_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Selected Case Ids",
+      "type": "array"
+    },
+    "planned_unit_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Planned Unit Ids",
+      "type": "array"
+    },
+    "run_fingerprint": {
+      "title": "Run Fingerprint",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "benchmark_version",
+    "dataset_seed",
+    "dataset_digest",
+    "split",
+    "policy_names",
+    "policy_runtimes",
+    "surface_indices",
+    "repeats",
+    "risk_threshold",
+    "selected_case_ids",
+    "planned_unit_ids",
+    "run_fingerprint"
+  ],
+  "title": "ExperimentManifest",
+  "type": "object"
+}

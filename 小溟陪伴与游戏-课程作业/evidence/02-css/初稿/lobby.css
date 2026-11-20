@@ -1,0 +1,66 @@
+:root {
+  font-family: Inter, "Segoe UI", "Microsoft YaHei", sans-serif;
+  color: #19362c;
+  background: #f7f8f2;
+  line-height: 1.65;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+.wrap { width: min(1120px, calc(100% - 64px)); margin-inline: auto; }
+a { color: #245d46; text-underline-offset: .2em; }
+a:focus-visible { outline: 3px solid #b76522; outline-offset: 4px; }
+.site-head { border-bottom: 1px solid #cdd7ca; background: #fffefa; }
+.head-inner, .brand, nav { display: flex; align-items: center; }
+.head-inner { min-height: 64px; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.brand { gap: 10px; color: #173c2b; text-decoration: none; font-weight: 750; }
+.brand-mark { background: #275540; color: #fffbe9; width: 32px; height: 32px; border-radius: 8px; text-align: center; line-height: 32px; font-size: 22px; }
+nav { gap: 24px; font-size: .88rem; }
+nav a { color: #3b5447; text-decoration: none; padding-block: .5rem; }
+.intro { padding: 44px 0 26px; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: clamp(2.1rem, 4.2vw, 3.25rem); line-height: 1.18; letter-spacing: -.045em; }
+.intro p { margin-top: 12px; color: #4d6156; }
+.games { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.card { overflow: hidden; border: 1px solid #c9d3c5; border-radius: 17px; background: #fffefa; display: flex; flex-direction: column; }
+.visual { height: clamp(178px, 18vw, 216px); position: relative; overflow: hidden; display: grid; place-items: center; }
+.chess-visual { background: #244b3b; }
+.chessboard { display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); width: 204px; aspect-ratio: 1; transform: rotate(-9deg); border: 7px solid #a8baa7; box-shadow: 6px 8px 0 #122d22; }
+.chessboard i { display: grid; place-items: center; color: #192d25; font: 19px/1 "Segoe UI Symbol", serif; }
+.chessboard .green { background: #94ae98; }
+.chessboard .pale { background: #e0e6ca; }
+.fish-visual { background: #d8e5e2; }
+.table-shape { width: 55%; height: 51%; border: 2px solid #899f97; border-radius: 50%; background: #f2f3dc; }
+.seats { position: absolute; inset: 0; width: min(290px, 94%); margin: auto; }
+.seat { position: absolute; width: 68px; height: 68px; border-radius: 50%; object-fit: contain; background: white; border: 2px solid #416453; box-shadow: 0 3px 0 #aac1b7; }
+.north, .south { left: 50%; transform: translateX(-50%); }
+.north { top: 6%; }
+.south { bottom: 6%; }
+.east, .west { top: 50%; transform: translateY(-50%); }
+.east { right: 4%; }
+.west { left: 4%; }
+.copy { flex: 1; padding: 23px 26px 25px; display: flex; align-items: flex-start; flex-direction: column; gap: 7px; }
+.kind { color: #526655; font-size: .8rem; font-weight: 650; }
+.copy h2 { font-size: 1.7rem; line-height: 1.3; }
+.copy > p:not(.kind) { color: #42594b; }
+.rule-link { display: inline-flex; gap: 18px; margin-top: auto; padding-top: 12px; font-weight: 650; }
+.rules { margin: 44px 0 30px; }
+.rules > h2 { padding-bottom: 14px; font-size: 1.5rem; }
+.rules article { border-top: 1px solid #c8d4c7; padding: 18px 0; display: grid; grid-template-columns: minmax(100px, 1fr) 3fr auto; gap: 20px; align-items: baseline; }
+.rules ol { margin: 0; padding-left: 1.5em; }
+.rules a, footer { font-size: .84rem; }
+footer { border-top: 1px solid #c8d4c7; padding: 18px 0 32px; color: #4b6253; }
+[id] { scroll-margin-top: 14px; }
+@media (max-width: 759px) {
+  .wrap { width: calc(100% - 32px); }
+  .games, .rules article { grid-template-columns: 1fr; }
+  .rules article { gap: 8px; }
+  .intro { padding-top: 28px; }
+  .copy { padding: 19px; }
+  .chessboard { width: 158px; }
+  .chessboard i { font-size: 15px; }
+  .seat { width: 54px; height: 54px; }
+  nav { gap: 12px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within { scroll-behavior: smooth; }
+}

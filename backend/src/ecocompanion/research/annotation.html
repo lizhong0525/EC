@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EcoTriage · 专家标注</title>
+<style>
+:root{font:15px/1.6 system-ui,sans-serif;color:#202626;background:#f4f6f5}
+*{box-sizing:border-box;letter-spacing:0}[hidden]{display:none!important}body{margin:0}header{background:#fff;border-bottom:1px solid #cbd3cf;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h1{font-size:20px;margin:0}h2{font-size:17px;margin:16px 0 10px}h3{font-size:15px}main{max-width:1300px;margin:auto;padding:24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px}
+section{min-width:0}input,textarea,select,button{font:inherit;border:1px solid #aebbb4;border-radius:4px;padding:8px;background:#fff;max-width:100%}textarea{width:100%;resize:vertical;min-height:70px}button{cursor:pointer}button[type=submit]{background:#17634c;color:#fff;border-color:#17634c}button:disabled{opacity:.5;cursor:wait}
+label{display:block;margin:10px 0 4px}fieldset{border:0;padding:0;margin:12px 0}legend{font-weight:600}.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px}.actions label{margin:0;display:flex;gap:7px;align-items:start;font-size:13px;overflow-wrap:anywhere}.actions input{flex-shrink:0;margin-top:5px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}.muted{color:#5a6860;font-size:13px}.message{padding:10px 0;border-bottom:1px solid #d9dfdb;white-space:pre-wrap;overflow-wrap:anywhere}.current{border-left:3px solid #17634c;padding-left:12px;background:#e7f1eb}.id{font:12px ui-monospace,monospace;display:block;color:#58645e;overflow-wrap:anywhere}
+#notice{color:#943d24;white-space:pre-wrap;max-width:1300px;margin:12px auto;padding:0 24px}#research{padding:8px 24px;background:#eef0e5;border-bottom:1px solid #d1d6bc}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}#token{width:280px}
+@media(max-width:800px){main{grid-template-columns:1fr;padding:16px;gap:16px}header{padding:12px 16px}.row,.actions{grid-template-columns:1fr}#token{width:100%}}
+</style>
+</head>
+<body>
+<header><div><h1>EcoTriage · 专家标注</h1><span id="progress" class="muted">ecotriage-v2.0.0</span></div>
+<form id="login" class="toolbar"><input id="token" type="password" autocomplete="off" aria-label="标注访问凭据" placeholder="标注访问凭据" required><button type="submit">进入标注</button><button id="logout" type="button" hidden>退出</button></form></header>
+<div id="research" class="muted">合成研究材料 · 非诊断、非治疗 · 专家资质与伦理流程须由管理员独立核验</div>
+<div id="notice" role="alert"></div>
+<main hidden id="workspace">
+<section><h2>当前可见材料</h2><div id="profile"></div><div id="events"></div><div id="history"></div><div id="current" class="message current"></div><div id="comparison"></div></section>
+<section><form id="judgment">
+<div class="row"><div><label for="risk">风险行动等级</label><select id="risk" required><option value="">请选择</option><option>L0</option><option>L1</option><option>L2</option><option>L3</option><option>L4</option><option>B</option></select></div><div><label for="confidence">判断置信度</label><input id="confidence" type="number" min="0" max="1" step="0.01" required></div></div>
+<fieldset><legend>可接受动作</legend><div id="acceptable" class="actions"></div></fieldset>
+<label for="preferred">优选动作</label><select id="preferred" required></select>
+<fieldset><legend>禁止动作</legend><div id="prohibited" class="actions"></div></fieldset>
+<label><input id="safety" type="checkbox"> 必须直接询问当前安全</label>
+<label for="target">现实支持对象</label><select id="target"><option>NONE</option><option>TRUSTED_ADULT</option><option>SCHOOL_SUPPORT</option><option>PROFESSIONAL</option><option>EMERGENCY_HUMAN</option></select>
+<label><input id="deadline" type="checkbox"> 优选转介动作不可再延迟</label>
+<label for="evidence-source">证据来源</label><select id="evidence-source"></select>
+<div class="toolbar"><label for="evidence-code">证据码</label><input id="evidence-code" aria-label="证据码"><button id="add-evidence" type="button" title="添加证据引用" aria-label="添加证据引用">+</button></div>
+<label for="evidence">证据引用（JSON）</label><textarea id="evidence" spellcheck="false">[]</textarea>
+<label for="missing">缺失信息（每行一项）</label><textarea id="missing"></textarea>
+<label for="reason">简短判断依据</label><textarea id="reason" maxlength="600" required></textarea>
+<label><input id="unresolved" type="checkbox"> 当前无法裁定，保留 Unresolved</label>
+<button id="submit" type="submit">提交并锁定</button>
+</form></section></main>
+<script>
+"use strict";
+let access="", task=null;
+const $=id=>document.getElementById(id);
+const names={SUPPORTIVE_LISTENING:"支持性倾听",CLARIFY_SYMPTOMS:"澄清状态",DIRECT_SAFETY_CHECK:"直接安全询问",LOW_RISK_COPING:"低风险调节",TRUSTED_ADULT_BRIDGE:"连接可信任成人",SCHOOL_SUPPORT:"学校支持",PROFESSIONAL_ASSESSMENT:"专业评估",URGENT_ESCALATION:"紧急人工接管",BOUNDARY_CLARIFICATION:"关系边界澄清",PRIVACY_CLARIFICATION:"隐私边界澄清"};
+async function request(path,body){const r=await fetch(path,{method:body?"POST":"GET",headers:{"Authorization":"Bearer "+access,"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined});const data=await r.json();if(!r.ok)throw Error(typeof data.detail==="string"?data.detail:JSON.stringify(data.detail));return data}
+function text(parent,tag,value,cls){const el=document.createElement(tag);el.textContent=value;if(cls)el.className=cls;parent.append(el);return el}
+async function load(){
+ task=await request("/task");$("workspace").hidden=task.status!=="ready";$("notice").textContent=task.status==="complete"?"当前标注已完成。":task.status==="waiting_for_independent_labels"?"等待两位专家完成独立标注。":"";
+ if(task.status!=="ready")return;
+ $("progress").textContent=`已锁定 ${task.completed_nodes} 节点 · 当前节点 ${task.step_id+1}`;const o=task.observation;
+ $("profile").textContent=o.visible_profile.age_group+" · "+o.visible_profile.disclosed_background.join("；");
+ $("events").textContent=o.visible_context.recent_events.join("；");$("history").replaceChildren();
+ for(const m of o.visible_context.conversation_history){const el=text($("history"),"div",m.content,"message");text(el,"span",m.message_id,"id")}
+ $("current").replaceChildren();text($("current"),"div",o.current_observation.message);text($("current"),"span",o.current_observation.observation_id,"id");
+ $("evidence-source").replaceChildren();for(const m of [...o.visible_context.conversation_history,{message_id:o.current_observation.observation_id,content:o.current_observation.message}])$("evidence-source").add(new Option(m.content.slice(0,32),m.message_id));$("evidence-source").value=o.current_observation.observation_id;
+ $("comparison").replaceChildren();if(task.independent_labels){text($("comparison"),"h3","独立标注分歧复核");text($("comparison"),"pre",JSON.stringify(task.independent_labels,null,2))}
+ $("judgment").reset();$("evidence").value="[]";$("preferred").replaceChildren(new Option("请选择",""));
+ for(const id of ["acceptable","prohibited"]){$(id).replaceChildren();for(const action of o.allowed_primary_actions){const label=document.createElement("label"),input=document.createElement("input");input.type="checkbox";input.name=id;input.value=action;label.append(input,document.createTextNode(names[action]||action));$(id).append(label)}}
+ for(const action of o.allowed_primary_actions)$("preferred").add(new Option(names[action]||action,action));
+}
+function clearSession(){access="";task=null;$("workspace").hidden=true;$("logout").hidden=true;for(const id of ["history","comparison","current","profile","events"])$(id).replaceChildren();$("judgment").reset()}
+$("login").addEventListener("submit",async e=>{e.preventDefault();access=$("token").value;$("token").value="";$("notice").textContent="";try{await load();$("logout").hidden=false}catch(err){clearSession();$("notice").textContent=err.message}});
+$("logout").addEventListener("click",()=>{clearSession();$("notice").textContent=""});
+$("add-evidence").addEventListener("click",()=>{try{const code=$("evidence-code").value.trim();if(!code)throw Error("请填写证据码");const refs=JSON.parse($("evidence").value);refs.push({observation_id:$("evidence-source").value,evidence_code:code});$("evidence").value=JSON.stringify(refs,null,2);$("evidence-code").value=""}catch(err){$("notice").textContent=err.message}});
+$("judgment").addEventListener("submit",async e=>{
+ e.preventDefault();$("submit").disabled=true;$("notice").textContent="";
+ try{const selected=name=>[...document.querySelectorAll(`input[name="${name}"]:checked`)].map(i=>i.value);
+ const payload={risk_level:$("risk").value,confidence:Number($("confidence").value),evidence:JSON.parse($("evidence").value),missing_information:$("missing").value.split("\n").map(s=>s.trim()).filter(Boolean),acceptable_actions:selected("acceptable"),preferred_action:$("preferred").value,prohibited_actions:selected("prohibited"),direct_safety_check_required:$("safety").checked,referral_target:$("target").value,deadline_now:$("deadline").checked,reason:$("reason").value,resolution:$("unresolved").checked?"unresolved":"resolved"};
+ await request("/judgments",{task_id:task.task_id,judgment:payload});await load();
+ }catch(err){$("notice").textContent=err.message}finally{$("submit").disabled=false}
+});
+</script>
+</body></html>

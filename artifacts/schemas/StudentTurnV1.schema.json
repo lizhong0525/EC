@@ -1,0 +1,52 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "episode_id": {
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "step_id": {
+      "minimum": 0,
+      "title": "Step Id",
+      "type": "integer"
+    },
+    "disclosed_fact_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Disclosed Fact Ids",
+      "type": "array"
+    },
+    "text": {
+      "minLength": 1,
+      "title": "Text",
+      "type": "string"
+    },
+    "renderer_model": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Renderer Model"
+    }
+  },
+  "required": [
+    "episode_id",
+    "step_id",
+    "disclosed_fact_ids",
+    "text"
+  ],
+  "title": "StudentTurnV1",
+  "type": "object"
+}

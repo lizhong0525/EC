@@ -1,0 +1,35 @@
+{
+  "schema": "ecocompanion-training-source-registry-v1",
+  "sources": [
+    {
+      "source_id": "eco-synthetic-v1",
+      "name": "EcoCompanion authored synthetic boundary examples",
+      "origin": "Project-authored, no real conversations or patient data",
+      "license": "Project source handoff terms",
+      "license_url": "../../../docs/QWEN_FINETUNING.md",
+      "training_allowed": true,
+      "reviewed_at": "2026-10-27",
+      "limitation": "Small engineering fixture, not clinical validation or evidence of population performance."
+    },
+    {
+      "source_id": "psydial-d4-acl2025",
+      "name": "PsyDial-D4 privacy-preserving reconstructed Chinese counseling dialogues",
+      "origin": "Author release for Qiu and Lan, PsyDial, ACL 2025, pp. 21624-21655",
+      "license": "Apache-2.0 (author dataset card)",
+      "license_url": "https://huggingface.co/datasets/qiuhuachuan/PsyDial-D4/blob/0ceef5ac19fb8174baa6be31ce1b2637711cb4c2/README.md",
+      "training_allowed": true,
+      "reviewed_at": "2026-10-29",
+      "limitation": "Selected seeker turns are engineering annotations, not clinical labels. One dialogue is one split group. Safety ambiguity is excluded, not inferred."
+    },
+    {
+      "source_id": "eco-synthetic-v3-boundary",
+      "name": "EcoCompanion authored v3 safety-boundary examples",
+      "origin": "Project-authored, no user conversations or patient data",
+      "license": "Project source handoff terms",
+      "license_url": "../../../docs/QWEN_FINETUNING.md",
+      "training_allowed": true,
+      "reviewed_at": "2026-10-29",
+      "limitation": "Rule-oriented engineering examples; not clinical validation."
+    }
+  ]
+}

@@ -1,0 +1,379 @@
+{
+  "$defs": {
+    "Action": {
+      "enum": [
+        "SUPPORTIVE_LISTENING",
+        "CLARIFY_SYMPTOMS",
+        "DIRECT_SAFETY_CHECK",
+        "LOW_RISK_COPING",
+        "TRUSTED_ADULT_BRIDGE",
+        "SCHOOL_SUPPORT",
+        "PROFESSIONAL_ASSESSMENT",
+        "URGENT_ESCALATION",
+        "BOUNDARY_CLARIFICATION",
+        "PRIVACY_CLARIFICATION"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "CaseStepSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "step_id": {
+          "minimum": 0,
+          "title": "Step Id",
+          "type": "integer"
+        },
+        "simulated_time": {
+          "title": "Simulated Time",
+          "type": "string"
+        },
+        "external_events": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "External Events",
+          "type": "array"
+        },
+        "observation_id": {
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "frozen_utterances": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Frozen Utterances",
+          "type": "array"
+        },
+        "state": {
+          "$ref": "#/$defs/HiddenState"
+        },
+        "available_fact_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Available Fact Ids",
+          "type": "array"
+        },
+        "acceptable_actions": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Acceptable Actions",
+          "type": "array"
+        },
+        "preferred_action": {
+          "$ref": "#/$defs/Action"
+        },
+        "prohibited_actions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Prohibited Actions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "step_id",
+        "simulated_time",
+        "observation_id",
+        "frozen_utterances",
+        "state",
+        "acceptable_actions",
+        "preferred_action"
+      ],
+      "title": "CaseStepSpec",
+      "type": "object"
+    },
+    "DisclosureFact": {
+      "additionalProperties": false,
+      "properties": {
+        "fact_id": {
+          "title": "Fact Id",
+          "type": "string"
+        },
+        "evidence_code": {
+          "title": "Evidence Code",
+          "type": "string"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "minimum_disclosure_readiness": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Minimum Disclosure Readiness",
+          "type": "number"
+        },
+        "available_from_step": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Available From Step",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "fact_id",
+        "evidence_code",
+        "content"
+      ],
+      "title": "DisclosureFact",
+      "type": "object"
+    },
+    "ExpressionStyle": {
+      "enum": [
+        "EXPLICIT",
+        "INDIRECT",
+        "MASKED_OR_CONTRADICTORY"
+      ],
+      "title": "ExpressionStyle",
+      "type": "string"
+    },
+    "HiddenState": {
+      "additionalProperties": false,
+      "properties": {
+        "depression_burden": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Depression Burden",
+          "type": "number"
+        },
+        "acute_safety_risk": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Acute Safety Risk",
+          "type": "number"
+        },
+        "trust_in_companion": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Trust In Companion",
+          "type": "number"
+        },
+        "disclosure_readiness": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Disclosure Readiness",
+          "type": "number"
+        },
+        "offline_help_willingness": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Offline Help Willingness",
+          "type": "number"
+        },
+        "ai_dependency": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Ai Dependency",
+          "type": "number"
+        },
+        "family_support": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Family Support",
+          "type": "number"
+        },
+        "peer_support": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Peer Support",
+          "type": "number"
+        },
+        "school_support": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "School Support",
+          "type": "number"
+        }
+      },
+      "required": [
+        "depression_burden",
+        "acute_safety_risk",
+        "trust_in_companion",
+        "disclosure_readiness",
+        "offline_help_willingness",
+        "ai_dependency",
+        "family_support",
+        "peer_support",
+        "school_support"
+      ],
+      "title": "HiddenState",
+      "type": "object"
+    },
+    "InterventionWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/Action"
+        },
+        "earliest_valid_step": {
+          "minimum": 0,
+          "title": "Earliest Valid Step",
+          "type": "integer"
+        },
+        "optimal_start_step": {
+          "minimum": 0,
+          "title": "Optimal Start Step",
+          "type": "integer"
+        },
+        "optimal_end_step": {
+          "minimum": 0,
+          "title": "Optimal End Step",
+          "type": "integer"
+        },
+        "latest_safe_step": {
+          "minimum": 0,
+          "title": "Latest Safe Step",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "action",
+        "earliest_valid_step",
+        "optimal_start_step",
+        "optimal_end_step",
+        "latest_safe_step"
+      ],
+      "title": "InterventionWindow",
+      "type": "object"
+    },
+    "RiskTrajectory": {
+      "enum": [
+        "TRANSIENT_LOW_MOOD",
+        "NON_DEPRESSIVE_DISTRESS",
+        "PERSISTENT_SUBCLINICAL",
+        "GRADUAL_WORSENING",
+        "SEVERE_NON_ACUTE",
+        "ACUTE_CRISIS"
+      ],
+      "title": "RiskTrajectory",
+      "type": "string"
+    },
+    "SocialEcology": {
+      "enum": [
+        "FAMILY_SUPPORT",
+        "PEER_OR_TEACHER_SUPPORT",
+        "FAMILY_CONFLICT",
+        "LOW_OVERALL_SUPPORT"
+      ],
+      "title": "SocialEcology",
+      "type": "string"
+    },
+    "VisibleProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "age_group": {
+          "title": "Age Group",
+          "type": "string"
+        },
+        "language": {
+          "default": "zh-CN",
+          "title": "Language",
+          "type": "string"
+        },
+        "disclosed_background": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Disclosed Background",
+          "type": "array"
+        }
+      },
+      "required": [
+        "age_group"
+      ],
+      "title": "VisibleProfile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "benchmark_version": {
+      "default": "ecotriage-v1",
+      "title": "Benchmark Version",
+      "type": "string"
+    },
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "synthetic": {
+      "const": true,
+      "default": true,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "risk_trajectory": {
+      "$ref": "#/$defs/RiskTrajectory"
+    },
+    "social_ecology": {
+      "$ref": "#/$defs/SocialEcology"
+    },
+    "expression_style": {
+      "$ref": "#/$defs/ExpressionStyle"
+    },
+    "visible_profile": {
+      "$ref": "#/$defs/VisibleProfile"
+    },
+    "persona_tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Persona Tags",
+      "type": "array"
+    },
+    "event_template_family": {
+      "title": "Event Template Family",
+      "type": "string"
+    },
+    "disclosure_facts": {
+      "items": {
+        "$ref": "#/$defs/DisclosureFact"
+      },
+      "title": "Disclosure Facts",
+      "type": "array"
+    },
+    "intervention_windows": {
+      "items": {
+        "$ref": "#/$defs/InterventionWindow"
+      },
+      "title": "Intervention Windows",
+      "type": "array"
+    },
+    "timeline": {
+      "items": {
+        "$ref": "#/$defs/CaseStepSpec"
+      },
+      "title": "Timeline",
+      "type": "array"
+    }
+  },
+  "required": [
+    "case_id",
+    "risk_trajectory",
+    "social_ecology",
+    "expression_style",
+    "visible_profile",
+    "persona_tags",
+    "event_template_family",
+    "disclosure_facts",
+    "intervention_windows",
+    "timeline"
+  ],
+  "title": "CaseSpecV1",
+  "type": "object"
+}

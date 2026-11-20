@@ -1,0 +1,394 @@
+{
+  "$defs": {
+    "Action": {
+      "enum": [
+        "SUPPORTIVE_LISTENING",
+        "CLARIFY_SYMPTOMS",
+        "DIRECT_SAFETY_CHECK",
+        "LOW_RISK_COPING",
+        "TRUSTED_ADULT_BRIDGE",
+        "SCHOOL_SUPPORT",
+        "PROFESSIONAL_ASSESSMENT",
+        "URGENT_ESCALATION",
+        "BOUNDARY_CLARIFICATION",
+        "PRIVACY_CLARIFICATION"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "DatasetSplit": {
+      "enum": [
+        "train",
+        "dev",
+        "public_test",
+        "hidden_test"
+      ],
+      "title": "DatasetSplit",
+      "type": "string"
+    },
+    "EvidenceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "evidence_code": {
+          "title": "Evidence Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "observation_id",
+        "evidence_code"
+      ],
+      "title": "EvidenceRef",
+      "type": "object"
+    },
+    "ExpressionStyle": {
+      "enum": [
+        "EXPLICIT",
+        "INDIRECT",
+        "MASKED_OR_CONTRADICTORY"
+      ],
+      "title": "ExpressionStyle",
+      "type": "string"
+    },
+    "RiskLevel": {
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "B"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    },
+    "RiskTrajectory": {
+      "enum": [
+        "TRANSIENT_LOW_MOOD",
+        "NON_DEPRESSIVE_DISTRESS",
+        "PERSISTENT_SUBCLINICAL",
+        "GRADUAL_WORSENING",
+        "SEVERE_NON_ACUTE",
+        "ACUTE_CRISIS"
+      ],
+      "title": "RiskTrajectory",
+      "type": "string"
+    },
+    "SocialEcology": {
+      "enum": [
+        "FAMILY_SUPPORT",
+        "PEER_OR_TEACHER_SUPPORT",
+        "FAMILY_CONFLICT",
+        "LOW_OVERALL_SUPPORT"
+      ],
+      "title": "SocialEcology",
+      "type": "string"
+    },
+    "StepDecisionRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "step_id": {
+          "minimum": 0,
+          "title": "Step Id",
+          "type": "integer"
+        },
+        "observation_id": {
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "depression_worsening": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Depression Worsening",
+          "type": "number"
+        },
+        "immediate_safety_risk": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Immediate Safety Risk",
+          "type": "number"
+        },
+        "dependency_risk": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Dependency Risk",
+          "type": "number"
+        },
+        "uncertainty": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Uncertainty",
+          "type": "number"
+        },
+        "evidence_refs": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/EvidenceRef"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Refs"
+        },
+        "evidence_codes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Codes",
+          "type": "array"
+        },
+        "primary_action": {
+          "$ref": "#/$defs/Action"
+        },
+        "escalation_level": {
+          "$ref": "#/$defs/RiskLevel"
+        },
+        "response_text": {
+          "title": "Response Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "step_id",
+        "observation_id",
+        "message",
+        "depression_worsening",
+        "immediate_safety_risk",
+        "dependency_risk",
+        "uncertainty",
+        "primary_action",
+        "escalation_level",
+        "response_text"
+      ],
+      "title": "StepDecisionRecord",
+      "type": "object"
+    },
+    "TrackAMetricRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "depression_brier": {
+          "title": "Depression Brier",
+          "type": "number"
+        },
+        "depression_ece": {
+          "title": "Depression Ece",
+          "type": "number"
+        },
+        "depression_false_positive_rate": {
+          "title": "Depression False Positive Rate",
+          "type": "number"
+        },
+        "immediate_risk_recall": {
+          "title": "Immediate Risk Recall",
+          "type": "number"
+        },
+        "critical_action_recall": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Critical Action Recall"
+        },
+        "acceptable_action_rate": {
+          "title": "Acceptable Action Rate",
+          "type": "number"
+        },
+        "preferred_action_rate": {
+          "title": "Preferred Action Rate",
+          "type": "number"
+        },
+        "prohibited_action_rate": {
+          "title": "Prohibited Action Rate",
+          "type": "number"
+        },
+        "intervention_window_hit_rate": {
+          "title": "Intervention Window Hit Rate",
+          "type": "number"
+        },
+        "premature_intervention_rate": {
+          "title": "Premature Intervention Rate",
+          "type": "number"
+        },
+        "late_or_missing_intervention_rate": {
+          "title": "Late Or Missing Intervention Rate",
+          "type": "number"
+        },
+        "evidence_code_precision": {
+          "title": "Evidence Code Precision",
+          "type": "number"
+        },
+        "mean_detection_delay": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Mean Detection Delay"
+        },
+        "pre_onset_alarm_rate": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pre Onset Alarm Rate"
+        },
+        "mean_pre_onset_lead_time": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean Pre Onset Lead Time"
+        },
+        "undetected_onset_rate": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Undetected Onset Rate"
+        }
+      },
+      "required": [
+        "depression_brier",
+        "depression_ece",
+        "depression_false_positive_rate",
+        "immediate_risk_recall",
+        "acceptable_action_rate",
+        "preferred_action_rate",
+        "prohibited_action_rate",
+        "intervention_window_hit_rate",
+        "premature_intervention_rate",
+        "late_or_missing_intervention_rate",
+        "evidence_code_precision",
+        "mean_detection_delay"
+      ],
+      "title": "TrackAMetricRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One complete case/surface/policy/repeat evaluation unit.",
+  "properties": {
+    "schema_version": {
+      "default": "1.1",
+      "enum": [
+        "1.0",
+        "1.1"
+      ],
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unit_id": {
+      "title": "Unit Id",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "run_fingerprint": {
+      "title": "Run Fingerprint",
+      "type": "string"
+    },
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "split": {
+      "$ref": "#/$defs/DatasetSplit"
+    },
+    "policy_name": {
+      "title": "Policy Name",
+      "type": "string"
+    },
+    "surface_index": {
+      "minimum": 0,
+      "title": "Surface Index",
+      "type": "integer"
+    },
+    "repeat_index": {
+      "minimum": 0,
+      "title": "Repeat Index",
+      "type": "integer"
+    },
+    "risk_trajectory": {
+      "$ref": "#/$defs/RiskTrajectory"
+    },
+    "social_ecology": {
+      "$ref": "#/$defs/SocialEcology"
+    },
+    "expression_style": {
+      "$ref": "#/$defs/ExpressionStyle"
+    },
+    "metrics": {
+      "$ref": "#/$defs/TrackAMetricRecord"
+    },
+    "steps": {
+      "items": {
+        "$ref": "#/$defs/StepDecisionRecord"
+      },
+      "title": "Steps",
+      "type": "array"
+    }
+  },
+  "required": [
+    "unit_id",
+    "run_id",
+    "run_fingerprint",
+    "case_id",
+    "split",
+    "policy_name",
+    "surface_index",
+    "repeat_index",
+    "risk_trajectory",
+    "social_ecology",
+    "expression_style",
+    "metrics",
+    "steps"
+  ],
+  "title": "ExperimentResult",
+  "type": "object"
+}

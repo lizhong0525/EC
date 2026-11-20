@@ -1,0 +1,169 @@
+{
+  "$defs": {
+    "ExternalEventLogRecordV1": {
+      "additionalProperties": false,
+      "description": "One visible synthetic utterance and its external context.\n\nJSONL inputs contain one instance per non-empty line.  JSON inputs may\ncontain one instance, an array of instances, or an\n:class:`ExternalEventLogDocumentV1` envelope.",
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "record_type": {
+          "const": "external_visible_event",
+          "default": "external_visible_event",
+          "title": "Record Type",
+          "type": "string"
+        },
+        "synthetic": {
+          "const": true,
+          "default": true,
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "source_system": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Source System",
+          "type": "string"
+        },
+        "source_episode_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Source Episode Id",
+          "type": "string"
+        },
+        "source_record_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Source Record Id",
+          "type": "string"
+        },
+        "sequence_index": {
+          "minimum": 0,
+          "title": "Sequence Index",
+          "type": "integer"
+        },
+        "simulated_time": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Simulated Time",
+          "type": "string"
+        },
+        "person": {
+          "$ref": "#/$defs/ExternalPersonV1"
+        },
+        "visible_events": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Visible Events",
+          "type": "array"
+        },
+        "text": {
+          "maxLength": 16384,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_system",
+        "source_episode_id",
+        "source_record_id",
+        "sequence_index",
+        "simulated_time",
+        "person",
+        "text"
+      ],
+      "title": "ExternalEventLogRecordV1",
+      "type": "object"
+    },
+    "ExternalPersonV1": {
+      "additionalProperties": false,
+      "description": "Observable synthetic-person attributes carried by each source record.",
+      "properties": {
+        "source_person_id": {
+          "description": "Opaque synthetic identifier; never use a real name or contact detail.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Source Person Id",
+          "type": "string"
+        },
+        "age_group": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Age Group",
+          "type": "string"
+        },
+        "language": {
+          "default": "zh-CN",
+          "maxLength": 32,
+          "minLength": 1,
+          "title": "Language",
+          "type": "string"
+        },
+        "disclosed_background": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Disclosed Background",
+          "type": "array"
+        },
+        "persona_tags": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Persona Tags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_person_id",
+        "age_group"
+      ],
+      "title": "ExternalPersonV1",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "JSON envelope for a collection of neutral external-log records.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "document_type": {
+      "const": "ecocompanion_external_visible_event_log",
+      "default": "ecocompanion_external_visible_event_log",
+      "title": "Document Type",
+      "type": "string"
+    },
+    "records": {
+      "items": {
+        "$ref": "#/$defs/ExternalEventLogRecordV1"
+      },
+      "minItems": 1,
+      "title": "Records",
+      "type": "array"
+    }
+  },
+  "required": [
+    "records"
+  ],
+  "title": "ExternalEventLogDocumentV1",
+  "type": "object"
+}

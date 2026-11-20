@@ -1,0 +1,373 @@
+{
+  "$defs": {
+    "InteractiveModelBindingRecord": {
+      "additionalProperties": false,
+      "description": "One exact model/family assignment frozen for an interactive role.",
+      "properties": {
+        "role": {
+          "$ref": "#/$defs/ModelRole"
+        },
+        "model_id": {
+          "minLength": 1,
+          "title": "Model Id",
+          "type": "string"
+        },
+        "family": {
+          "minLength": 1,
+          "title": "Family",
+          "type": "string"
+        },
+        "allowed_response_model_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Response Model Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "role",
+        "model_id",
+        "family"
+      ],
+      "title": "InteractiveModelBindingRecord",
+      "type": "object"
+    },
+    "InteractiveRuntimeRecord": {
+      "additionalProperties": false,
+      "description": "Complete local or formal API identity for a Track B/C run.",
+      "properties": {
+        "mode": {
+          "enum": [
+            "local",
+            "formal_api"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "renderer_name": {
+          "minLength": 1,
+          "title": "Renderer Name",
+          "type": "string"
+        },
+        "responder_name": {
+          "minLength": 1,
+          "title": "Responder Name",
+          "type": "string"
+        },
+        "role_bindings": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/InteractiveModelBindingRecord"
+          },
+          "title": "Role Bindings",
+          "type": "array"
+        },
+        "model_snapshot_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Snapshot Digest"
+        },
+        "pricing_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pricing Version"
+        },
+        "pricing_catalog_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pricing Catalog Digest"
+        },
+        "qualification_suite_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Qualification Suite Version"
+        },
+        "gateway_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gateway Name"
+        },
+        "gateway_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gateway Version"
+        },
+        "adapter_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Adapter Name"
+        },
+        "adapter_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Adapter Version"
+        },
+        "decoder_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decoder Version"
+        },
+        "cache_schema_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cache Schema Version"
+        },
+        "trace_schema_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trace Schema Version"
+        },
+        "prompt_identities": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/PromptIdentityRecord"
+          },
+          "title": "Prompt Identities",
+          "type": "array"
+        },
+        "api_budget_cny": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 5000.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Api Budget Cny"
+        }
+      },
+      "required": [
+        "mode",
+        "renderer_name",
+        "responder_name"
+      ],
+      "title": "InteractiveRuntimeRecord",
+      "type": "object"
+    },
+    "ModelRole": {
+      "enum": [
+        "evaluated_agent",
+        "student_simulator",
+        "judge"
+      ],
+      "title": "ModelRole",
+      "type": "string"
+    },
+    "PromptIdentityRecord": {
+      "additionalProperties": false,
+      "description": "Version and content digest for one provider-facing prompt.",
+      "properties": {
+        "component": {
+          "minLength": 1,
+          "title": "Component",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        },
+        "digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "component",
+        "version",
+        "digest"
+      ],
+      "title": "PromptIdentityRecord",
+      "type": "object"
+    },
+    "TrackCConfiguration": {
+      "description": "The four text configurations in the V1 factorial matrix.",
+      "enum": [
+        "PLAIN_ASSISTANT",
+        "LONG_TERM_MEMORY",
+        "MEMORY_PROACTIVE",
+        "MEMORY_PROACTIVE_ECO_SAFE"
+      ],
+      "title": "TrackCConfiguration",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Write-once description of one text relationship-safety Track C run.",
+  "properties": {
+    "schema_version": {
+      "const": "1.2",
+      "default": "1.2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "title": "Run Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "benchmark_version": {
+      "title": "Benchmark Version",
+      "type": "string"
+    },
+    "track": {
+      "const": "C",
+      "default": "C",
+      "title": "Track",
+      "type": "string"
+    },
+    "scenario_digest": {
+      "title": "Scenario Digest",
+      "type": "string"
+    },
+    "scenario_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Scenario Ids",
+      "type": "array"
+    },
+    "configurations": {
+      "items": {
+        "$ref": "#/$defs/TrackCConfiguration"
+      },
+      "title": "Configurations",
+      "type": "array"
+    },
+    "seeds": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Seeds",
+      "type": "array"
+    },
+    "responder_name": {
+      "minLength": 1,
+      "title": "Responder Name",
+      "type": "string"
+    },
+    "interactive_runtime": {
+      "$ref": "#/$defs/InteractiveRuntimeRecord"
+    },
+    "planned_unit_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Planned Unit Ids",
+      "type": "array"
+    },
+    "run_fingerprint": {
+      "title": "Run Fingerprint",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "benchmark_version",
+    "scenario_digest",
+    "scenario_ids",
+    "configurations",
+    "seeds",
+    "responder_name",
+    "interactive_runtime",
+    "planned_unit_ids",
+    "run_fingerprint"
+  ],
+  "title": "TrackCExperimentManifest",
+  "type": "object"
+}

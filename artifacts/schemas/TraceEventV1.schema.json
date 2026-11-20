@@ -1,0 +1,537 @@
+{
+  "$defs": {
+    "Action": {
+      "enum": [
+        "SUPPORTIVE_LISTENING",
+        "CLARIFY_SYMPTOMS",
+        "DIRECT_SAFETY_CHECK",
+        "LOW_RISK_COPING",
+        "TRUSTED_ADULT_BRIDGE",
+        "SCHOOL_SUPPORT",
+        "PROFESSIONAL_ASSESSMENT",
+        "URGENT_ESCALATION",
+        "BOUNDARY_CLARIFICATION",
+        "PRIVACY_CLARIFICATION"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "ActorRole": {
+      "enum": [
+        "USER",
+        "COMPANION",
+        "STUDENT_SIMULATOR",
+        "SYSTEM"
+      ],
+      "title": "ActorRole",
+      "type": "string"
+    },
+    "ConversationMessage": {
+      "additionalProperties": false,
+      "properties": {
+        "message_id": {
+          "title": "Message Id",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/ActorRole"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "simulated_time": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Simulated Time"
+        }
+      },
+      "required": [
+        "message_id",
+        "role",
+        "content"
+      ],
+      "title": "ConversationMessage",
+      "type": "object"
+    },
+    "CurrentObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "channel": {
+          "const": "text",
+          "default": "text",
+          "title": "Channel",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "observable_features": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Observable Features",
+          "type": "object"
+        }
+      },
+      "required": [
+        "observation_id",
+        "message"
+      ],
+      "title": "CurrentObservation",
+      "type": "object"
+    },
+    "HiddenState": {
+      "additionalProperties": false,
+      "properties": {
+        "depression_burden": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Depression Burden",
+          "type": "number"
+        },
+        "acute_safety_risk": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Acute Safety Risk",
+          "type": "number"
+        },
+        "trust_in_companion": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Trust In Companion",
+          "type": "number"
+        },
+        "disclosure_readiness": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Disclosure Readiness",
+          "type": "number"
+        },
+        "offline_help_willingness": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Offline Help Willingness",
+          "type": "number"
+        },
+        "ai_dependency": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Ai Dependency",
+          "type": "number"
+        },
+        "family_support": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Family Support",
+          "type": "number"
+        },
+        "peer_support": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Peer Support",
+          "type": "number"
+        },
+        "school_support": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "School Support",
+          "type": "number"
+        }
+      },
+      "required": [
+        "depression_burden",
+        "acute_safety_risk",
+        "trust_in_companion",
+        "disclosure_readiness",
+        "offline_help_willingness",
+        "ai_dependency",
+        "family_support",
+        "peer_support",
+        "school_support"
+      ],
+      "title": "HiddenState",
+      "type": "object"
+    },
+    "ModelCallUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "cached_input_tokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Cached Input Tokens",
+          "type": "integer"
+        },
+        "estimated_cost_cny": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Estimated Cost Cny",
+          "type": "number"
+        },
+        "retry_index": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Retry Index",
+          "type": "integer"
+        },
+        "cache_hit": {
+          "default": false,
+          "title": "Cache Hit",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "model"
+      ],
+      "title": "ModelCallUsage",
+      "type": "object"
+    },
+    "ObservationV1": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "benchmark_version": {
+          "default": "ecotriage-v1",
+          "title": "Benchmark Version",
+          "type": "string"
+        },
+        "track": {
+          "$ref": "#/$defs/Track"
+        },
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "step_id": {
+          "minimum": 0,
+          "title": "Step Id",
+          "type": "integer"
+        },
+        "simulated_time": {
+          "title": "Simulated Time",
+          "type": "string"
+        },
+        "visible_profile": {
+          "$ref": "#/$defs/VisibleProfile"
+        },
+        "current_observation": {
+          "$ref": "#/$defs/CurrentObservation"
+        },
+        "visible_context": {
+          "$ref": "#/$defs/VisibleContext"
+        },
+        "allowed_primary_actions": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Allowed Primary Actions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "track",
+        "episode_id",
+        "step_id",
+        "simulated_time",
+        "visible_profile",
+        "current_observation",
+        "allowed_primary_actions"
+      ],
+      "title": "ObservationV1",
+      "type": "object"
+    },
+    "RiskEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "depression_worsening": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Depression Worsening",
+          "type": "number"
+        },
+        "immediate_safety_risk": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Immediate Safety Risk",
+          "type": "number"
+        },
+        "dependency_risk": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Dependency Risk",
+          "type": "number"
+        }
+      },
+      "required": [
+        "depression_worsening",
+        "immediate_safety_risk",
+        "dependency_risk"
+      ],
+      "title": "RiskEstimate",
+      "type": "object"
+    },
+    "SafetyAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "violation_codes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Violation Codes",
+          "type": "array"
+        },
+        "used_fallback": {
+          "default": false,
+          "title": "Used Fallback",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "passed"
+      ],
+      "title": "SafetyAudit",
+      "type": "object"
+    },
+    "Track": {
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ],
+      "title": "Track",
+      "type": "string"
+    },
+    "VisibleContext": {
+      "additionalProperties": false,
+      "properties": {
+        "recent_events": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Recent Events",
+          "type": "array"
+        },
+        "relationship_cues": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Relationship Cues",
+          "type": "array"
+        },
+        "conversation_history": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ConversationMessage"
+          },
+          "title": "Conversation History",
+          "type": "array"
+        },
+        "memory_budget_tokens": {
+          "default": 4096,
+          "minimum": 0,
+          "title": "Memory Budget Tokens",
+          "type": "integer"
+        }
+      },
+      "title": "VisibleContext",
+      "type": "object"
+    },
+    "VisibleProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "age_group": {
+          "title": "Age Group",
+          "type": "string"
+        },
+        "language": {
+          "default": "zh-CN",
+          "title": "Language",
+          "type": "string"
+        },
+        "disclosed_background": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Disclosed Background",
+          "type": "array"
+        }
+      },
+      "required": [
+        "age_group"
+      ],
+      "title": "VisibleProfile",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "benchmark_version": {
+      "default": "ecotriage-v1",
+      "title": "Benchmark Version",
+      "type": "string"
+    },
+    "trace_id": {
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "scenario_id": {
+      "title": "Scenario Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "step_id": {
+      "minimum": 0,
+      "title": "Step Id",
+      "type": "integer"
+    },
+    "recorded_at": {
+      "format": "date-time",
+      "title": "Recorded At",
+      "type": "string"
+    },
+    "external_event": {
+      "additionalProperties": true,
+      "title": "External Event",
+      "type": "object"
+    },
+    "observation": {
+      "$ref": "#/$defs/ObservationV1"
+    },
+    "memory_refs": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Memory Refs",
+      "type": "array"
+    },
+    "assessment": {
+      "$ref": "#/$defs/RiskEstimate"
+    },
+    "selected_action": {
+      "$ref": "#/$defs/Action"
+    },
+    "response_text": {
+      "title": "Response Text",
+      "type": "string"
+    },
+    "safety_audit": {
+      "$ref": "#/$defs/SafetyAudit"
+    },
+    "world_state_before": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HiddenState"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "world_state_after": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HiddenState"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "random_seed": {
+      "title": "Random Seed",
+      "type": "integer"
+    },
+    "model_usage": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ModelCallUsage"
+      },
+      "title": "Model Usage",
+      "type": "array"
+    }
+  },
+  "required": [
+    "trace_id",
+    "scenario_id",
+    "episode_id",
+    "step_id",
+    "observation",
+    "assessment",
+    "selected_action",
+    "response_text",
+    "safety_audit",
+    "random_seed"
+  ],
+  "title": "TraceEventV1",
+  "type": "object"
+}
